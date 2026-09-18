@@ -67,10 +67,21 @@
     border:none;
     color:var(--text-muted);
     font-family:'IBM Plex Sans', sans-serif;
-    font-size:0.7rem;
-    padding:13px 2px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    padding:8px 2px 7px;
     border-bottom:2px solid transparent;
     cursor:pointer;
+  }
+  nav.tabs button .tab-icon{
+    font-size:1rem;
+    line-height:1;
+  }
+  nav.tabs button .tab-label{
+    font-size:0.6rem;
+    line-height:1;
   }
   nav.tabs button.active{
     color:var(--text);
@@ -581,11 +592,11 @@
 </header>
 
 <nav class="tabs">
-  <button class="tab-btn active" data-tab="pagamentos">Pagamentos</button>
-  <button class="tab-btn" data-tab="funcionarios">Funcionários</button>
-  <button class="tab-btn" data-tab="despesas">Despesas</button>
-  <button class="tab-btn" data-tab="resumo">Resumo</button>
-  <button class="tab-btn" data-tab="relatorios">Relatórios</button>
+  <button class="tab-btn active" data-tab="pagamentos"><span class="tab-icon">💰</span><span class="tab-label">Pagamentos</span></button>
+  <button class="tab-btn" data-tab="funcionarios"><span class="tab-icon">👥</span><span class="tab-label">Funcionários</span></button>
+  <button class="tab-btn" data-tab="despesas"><span class="tab-icon">🧾</span><span class="tab-label">Despesas</span></button>
+  <button class="tab-btn" data-tab="resumo"><span class="tab-icon">📊</span><span class="tab-label">Resumo</span></button>
+  <button class="tab-btn" data-tab="relatorios"><span class="tab-icon">📄</span><span class="tab-label">Relatórios</span></button>
 </nav>
 
 <main>
@@ -674,6 +685,34 @@
           <div class="valor" id="buffet-total">R$ 0</div>
         </div>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>Bebidas</h2>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:2px;">
+        🍺 Bebem cerveja: <span class="mono" id="contagem-bebem-cerveja">0</span> ·
+        🥤 Não bebem: <span class="mono" id="contagem-nao-bebem">0</span> ·
+        👥 Total de pessoas: <span class="mono" id="contagem-total-pessoas">0</span>
+      </p>
+
+      <label>Cerveja — consumo por pessoa (litros)</label>
+      <input type="text" inputmode="decimal" id="input-consumo-cerveja" placeholder="Ex: 1,5">
+      <label>Cerveja — tamanho da embalagem (litros)</label>
+      <input type="text" inputmode="decimal" id="input-embalagem-cerveja" placeholder="Ex: 0,35 (lata)">
+
+      <label>Refrigerante — consumo por pessoa (litros)</label>
+      <input type="text" inputmode="decimal" id="input-consumo-refri" placeholder="Ex: 1">
+      <label>Refrigerante — tamanho da embalagem (litros)</label>
+      <input type="text" inputmode="decimal" id="input-embalagem-refri" placeholder="Ex: 2">
+
+      <label>Água — consumo por pessoa (litros)</label>
+      <input type="text" inputmode="decimal" id="input-consumo-agua" placeholder="Ex: 0,5">
+      <label>Água — tamanho da embalagem (litros)</label>
+      <input type="text" inputmode="decimal" id="input-embalagem-agua" placeholder="Ex: 0,5">
+
+      <button class="btn-primario" id="btn-salvar-bebidas">Calcular bebidas</button>
+
+      <div class="relatorio-preview" id="resultado-bebidas" style="display:none;"></div>
     </div>
 
     <div class="card">
@@ -817,7 +856,7 @@
     </div>
   </section>
 
-  <div class="rodape-versao">v13 · Confraternização PPV</div>
+  <div class="rodape-versao">v15 · Confraternização PPV</div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -895,7 +934,7 @@ tabs.forEach(btn => {
     document.getElementById('tab-' + btn.dataset.tab).style.display = 'block';
     if(btn.dataset.tab === 'pagamentos') renderPagamentos();
     if(btn.dataset.tab === 'funcionarios') renderFuncionarios();
-    if(btn.dataset.tab === 'despesas') renderDespesas();
+    if(btn.dataset.tab === 'despesas'){ renderDespesas(); renderBebidas(); }
     if(btn.dataset.tab === 'resumo') renderResumo();
     if(btn.dataset.tab === 'relatorios') renderTituloMesRelatorio();
   });
@@ -1316,6 +1355,75 @@ function numero(valorStr){
 function moeda(v){
   return 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
 }
+
+// ---------- BEBIDAS ----------
+const BEBIDAS_KEY = 'confraternizacao_bebidas';
+let bebidas = JSON.parse(localStorage.getItem(BEBIDAS_KEY) || '{}');
+
+function salvarBebidas(){ localStorage.setItem(BEBIDAS_KEY, JSON.stringify(bebidas)); }
+
+function contarBebidas(){
+  let bebemCerveja = 0, naoBebem = 0;
+  funcionarios.forEach(f => {
+    if(f.bebida === 'cerveja') bebemCerveja++; else naoBebem++;
+    (f.familiares || []).forEach(() => { naoBebem++; }); // familiares não bebem cerveja
+  });
+  const totalPessoas = bebemCerveja + naoBebem;
+  return { bebemCerveja, naoBebem, totalPessoas };
+}
+
+function renderBebidas(){
+  const c = contarBebidas();
+  document.getElementById('contagem-bebem-cerveja').textContent = c.bebemCerveja;
+  document.getElementById('contagem-nao-bebem').textContent = c.naoBebem;
+  document.getElementById('contagem-total-pessoas').textContent = c.totalPessoas;
+
+  document.getElementById('input-consumo-cerveja').value = bebidas.consumoCerveja || '';
+  document.getElementById('input-embalagem-cerveja').value = bebidas.embalagemCerveja || '';
+  document.getElementById('input-consumo-refri').value = bebidas.consumoRefri || '';
+  document.getElementById('input-embalagem-refri').value = bebidas.embalagemRefri || '';
+  document.getElementById('input-consumo-agua').value = bebidas.consumoAgua || '';
+  document.getElementById('input-embalagem-agua').value = bebidas.embalagemAgua || '';
+}
+
+document.getElementById('btn-salvar-bebidas').addEventListener('click', () => {
+  bebidas.consumoCerveja = document.getElementById('input-consumo-cerveja').value.trim();
+  bebidas.embalagemCerveja = document.getElementById('input-embalagem-cerveja').value.trim();
+  bebidas.consumoRefri = document.getElementById('input-consumo-refri').value.trim();
+  bebidas.embalagemRefri = document.getElementById('input-embalagem-refri').value.trim();
+  bebidas.consumoAgua = document.getElementById('input-consumo-agua').value.trim();
+  bebidas.embalagemAgua = document.getElementById('input-embalagem-agua').value.trim();
+  salvarBebidas();
+
+  const c = contarBebidas();
+  const litrosCerveja = c.bebemCerveja * numero(bebidas.consumoCerveja);
+  const litrosRefri = c.naoBebem * numero(bebidas.consumoRefri);
+  const litrosAgua = c.totalPessoas * numero(bebidas.consumoAgua);
+
+  const embCerveja = numero(bebidas.embalagemCerveja);
+  const embRefri = numero(bebidas.embalagemRefri);
+  const embAgua = numero(bebidas.embalagemAgua);
+
+  const unidCerveja = embCerveja > 0 ? Math.ceil(litrosCerveja / embCerveja) : null;
+  const unidRefri = embRefri > 0 ? Math.ceil(litrosRefri / embRefri) : null;
+  const unidAgua = embAgua > 0 ? Math.ceil(litrosAgua / embAgua) : null;
+
+  function linha(emoji, nome, litros, unidades, embalagem){
+    const litrosTxt = (Math.round(litros * 100) / 100).toString().replace('.', ',') + ' L';
+    const unidTxt = unidades !== null ? `${unidades} un. de ${embalagem}L` : 'informe o tamanho da embalagem';
+    return `<div class="relatorio-linha"><div class="r-nome">${emoji} ${nome}<span class="r-sub">${litrosTxt} no total</span></div><div class="r-valor">${unidTxt}</div></div>`;
+  }
+
+  document.getElementById('resultado-bebidas').innerHTML = `
+    <h4>Quantidade necessária</h4>
+    <div class="subtitulo">${c.bebemCerveja} bebem cerveja · ${c.naoBebem} não bebem · ${c.totalPessoas} pessoas no total</div>
+    ${linha('🍺', 'Cerveja', litrosCerveja, unidCerveja, bebidas.embalagemCerveja)}
+    ${linha('🥤', 'Refrigerante', litrosRefri, unidRefri, bebidas.embalagemRefri)}
+    ${linha('💧', 'Água', litrosAgua, unidAgua, bebidas.embalagemAgua)}
+  `;
+  document.getElementById('resultado-bebidas').style.display = 'block';
+  mostrarToast('Bebidas calculadas!');
+});
 
 function obterDetalheBuffet(){
   const auto = contarCategoriasBuffet();
