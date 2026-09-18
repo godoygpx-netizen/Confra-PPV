@@ -5,133 +5,111 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Confraternização PPV</title>
 <link rel="manifest" id="manifest-link">
-<meta name="theme-color" content="#2F6B4A">
+<meta name="theme-color" content="#14171A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" id="apple-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --verde: #5CC48D;
-    --verde-bloco: #2F6B4A;
-    --verde-claro: #3D7F58;
-    --ambar: #E7C25E;
-    --ambar-claro: #F2DA96;
-    --fundo: #14181A;
-    --superficie: #1D2321;
-    --superficie-2: #262E2B;
-    --texto: #EDEAE0;
-    --texto-suave: #9B9B8F;
-    --texto-sobre-cor: #F5F1E6;
-    --texto-escuro-fixo: #1B1B14;
-    --coral: #E2735C;
-    --sálvia: #57C48A;
-    --borda: #333B37;
-    --sombra: 0 2px 12px rgba(0,0,0,0.35);
+    --bg:#14171A;
+    --surface:#1B1F23;
+    --surface-raised:#20252A;
+    --line: rgba(237,234,227,0.12);
+    --line-strong: rgba(237,234,227,0.22);
+    --text:#EDEAE3;
+    --text-muted:#9AA0A6;
+    --amber:#E8A33D;
+    --amber-dim: rgba(232,163,61,0.16);
+    --steel:#5B8AA6;
+    --steel-dim: rgba(91,138,166,0.16);
+    --ok:#4E8B7B;
+    --ok-dim: rgba(78,139,123,0.16);
+    --warn:#C1503A;
+    --warn-dim: rgba(193,80,58,0.16);
   }
-  *{box-sizing:border-box; margin:0; padding:0;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
   body{
-    font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background:var(--fundo);
-    color:var(--texto);
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.45;
     -webkit-font-smoothing:antialiased;
-    padding-bottom:90px;
-    min-height:100vh;
+    padding-bottom:72px;
   }
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; margin:0;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
   header.top{
-    background:var(--verde-bloco);
-    color:var(--texto-sobre-cor);
-    padding:28px 20px 22px;
-    position:relative;
-    overflow:hidden;
+    padding:22px 18px 16px;
+    border-bottom:1px solid var(--line);
     text-align:center;
   }
-  header.top::after{
-    content:"";
-    position:absolute;
-    right:-30px; top:-30px;
-    width:140px; height:140px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(231,194,94,0.30), transparent 70%);
-  }
-  header.top h1{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:1.65rem;
-    letter-spacing:-0.01em;
-    position:relative;
-  }
+  header.top h1{font-size:1.4rem; font-weight:600; letter-spacing:0.01em;}
+
   main{
     max-width:640px;
     margin:0 auto;
-    padding:18px 16px 20px;
+    padding:16px 14px 8px;
   }
+
   nav.tabs{
     display:flex;
-    background:var(--superficie);
-    border-radius:14px;
-    padding:4px;
-    box-shadow:var(--sombra);
-    margin:-24px 16px 20px;
-    max-width:608px;
-    margin-left:auto; margin-right:auto;
-    position:relative;
-    z-index:2;
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:var(--bg); z-index:5;
   }
   nav.tabs button{
     flex:1;
+    background:none;
     border:none;
-    background:transparent;
-    padding:10px 3px;
-    font-family:'Inter', sans-serif;
-    font-size:0.72rem;
-    font-weight:600;
-    color:var(--texto-suave);
-    border-radius:10px;
+    color:var(--text-muted);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.7rem;
+    padding:13px 2px;
+    border-bottom:2px solid transparent;
     cursor:pointer;
-    transition:background .15s, color .15s;
   }
   nav.tabs button.active{
-    background:var(--verde-bloco);
-    color:var(--texto-sobre-cor);
+    color:var(--text);
+    border-bottom-color:var(--amber);
   }
+
   .card{
-    background:var(--superficie);
-    border-radius:16px;
-    padding:18px;
-    box-shadow:var(--sombra);
-    margin-bottom:14px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:14px;
+    margin-bottom:16px;
   }
   .card h2{
-    font-family:'Fraunces', serif;
-    font-size:1.15rem;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.02rem;
     font-weight:600;
-    color:var(--verde);
+    color:var(--text);
     margin-bottom:14px;
   }
   label{
     display:block;
     font-size:0.78rem;
-    font-weight:600;
-    color:var(--texto-suave);
-    margin-bottom:5px;
+    color:var(--text-muted);
+    margin-bottom:6px;
     margin-top:12px;
   }
   label:first-of-type{margin-top:0;}
   input[type=text], select, input[type=date]{
     width:100%;
-    padding:10px 12px;
-    border:1.5px solid var(--borda);
-    border-radius:10px;
-    font-size:0.95rem;
-    font-family:'Inter', sans-serif;
-    background:var(--superficie-2);
-    color:var(--texto);
+    padding:10px;
+    border:1px solid var(--line-strong);
+    font-size:0.92rem;
+    font-family:'IBM Plex Sans', sans-serif;
+    background:var(--bg);
+    color:var(--text);
   }
   input[type=text]:focus, select:focus, input[type=date]:focus{
     outline:none;
-    border-color:var(--ambar);
+    border-color:var(--amber);
   }
   .escolha-bebida{
     display:flex;
@@ -140,25 +118,23 @@
   }
   .escolha-bebida button{
     flex:1;
-    padding:11px 8px;
-    border-radius:10px;
-    border:1.5px solid var(--borda);
-    background:var(--superficie-2);
-    font-family:'Inter',sans-serif;
-    font-weight:600;
-    font-size:0.85rem;
-    color:var(--texto-suave);
+    padding:9px 8px;
+    border:1px solid var(--line-strong);
+    background:var(--bg);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.84rem;
+    color:var(--text-muted);
     cursor:pointer;
   }
   .escolha-bebida button.sel-cerveja.on{
-    background:var(--ambar);
-    border-color:var(--ambar);
-    color:var(--texto-escuro-fixo);
+    border-color:var(--amber);
+    color:var(--amber);
+    background:var(--amber-dim);
   }
   .escolha-bebida button.sel-sem.on{
-    background:var(--sálvia);
-    border-color:var(--sálvia);
-    color:var(--texto-sobre-cor);
+    border-color:var(--steel);
+    color:var(--steel);
+    background:var(--steel-dim);
   }
   .familiares-lista{
     display:flex;
@@ -167,11 +143,11 @@
     margin-top:8px;
   }
   .familiar-chip{
-    background:var(--superficie-2);
-    border:1px solid var(--borda);
-    border-radius:999px;
+    background:var(--bg);
+    border:1px solid var(--line-strong);
     padding:5px 10px 5px 12px;
-    font-size:0.8rem;
+    font-size:0.78rem;
+    font-family:'IBM Plex Mono', monospace;
     display:flex;
     align-items:center;
     gap:6px;
@@ -179,8 +155,8 @@
   .familiar-chip button{
     background:none;
     border:none;
-    color:var(--coral);
-    font-size:0.95rem;
+    color:var(--warn);
+    font-size:0.9rem;
     cursor:pointer;
     line-height:1;
   }
@@ -191,70 +167,84 @@
   }
   .add-familiar-row input{flex:1;}
   .add-familiar-row button{
-    padding:0 16px;
-    border-radius:10px;
-    border:none;
-    background:var(--verde-claro);
-    color:var(--texto-sobre-cor);
-    font-weight:600;
+    padding:0 14px;
+    border:1px solid var(--line-strong);
+    background:none;
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:500;
     cursor:pointer;
   }
   .btn-primario{
     width:100%;
-    padding:13px;
+    padding:11px;
     border:none;
-    border-radius:12px;
-    background:var(--verde-bloco);
-    color:var(--texto-sobre-cor);
-    font-family:'Inter',sans-serif;
-    font-weight:700;
-    font-size:0.95rem;
+    background:var(--amber);
+    color:var(--bg);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
     margin-top:16px;
     cursor:pointer;
   }
-  .btn-primario:active{background:var(--verde-claro);}
+  .btn-primario:active{opacity:0.8;}
   .funcionario-item{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:12px 0;
-    border-bottom:1px solid var(--borda);
+    padding:11px 0;
+    border-bottom:1px solid var(--line);
   }
   .funcionario-item:last-child{border-bottom:none;}
   .funcionario-info .nome{
-    font-weight:600;
-    font-size:0.95rem;
+    font-weight:500;
+    font-size:0.94rem;
   }
+  .nome-clicavel{
+    cursor:pointer;
+    color:var(--text);
+    text-decoration:underline;
+    text-decoration-style:dotted;
+    text-underline-offset:3px;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+  }
+  .nome-clicavel:active{opacity:0.7;}
+  .icone-calendario{ font-size:0.8rem; opacity:0.75; }
   .funcionario-info .meta{
-    font-size:0.78rem;
-    color:var(--texto-suave);
+    font-size:0.74rem;
+    color:var(--text-muted);
+    font-family:'IBM Plex Mono', monospace;
     margin-top:2px;
   }
   .tag-valor{
     display:inline-block;
-    padding:2px 8px;
-    border-radius:999px;
-    font-size:0.72rem;
-    font-weight:700;
+    padding:2px 7px;
+    font-size:0.66rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
     margin-right:4px;
+    border:1px solid;
   }
-  .tag-cerveja{background:rgba(231,194,94,0.16); color:var(--ambar-claro);}
-  .tag-sem{background:rgba(87,196,138,0.16); color:var(--sálvia);}
+  .tag-cerveja{background:var(--amber-dim); color:var(--amber); border-color:rgba(232,163,61,0.3);}
+  .tag-sem{background:var(--steel-dim); color:var(--steel); border-color:rgba(91,138,166,0.3);}
   .item-acoes{display:flex; gap:6px;}
   .item-acoes button{
-    border:none;
-    background:var(--superficie-2);
-    width:32px; height:32px;
-    border-radius:9px;
-    font-size:0.9rem;
+    border:1px solid var(--line-strong);
+    background:none;
+    width:30px; height:30px;
+    font-size:0.85rem;
+    color:var(--text-muted);
     cursor:pointer;
   }
-  .item-acoes button.excluir{color:var(--coral);}
+  .item-acoes button.excluir{color:var(--warn); border-color:rgba(193,80,58,0.4);}
   .vazio{
     text-align:center;
-    padding:24px 10px;
-    color:var(--texto-suave);
+    padding:22px 12px;
+    color:var(--text-muted);
     font-size:0.88rem;
+    border:1px dashed var(--line-strong);
   }
   .mes-seletor{
     display:flex;
@@ -263,96 +253,95 @@
     margin-bottom:16px;
   }
   .mes-seletor button{
-    width:36px; height:36px;
-    border-radius:10px;
-    border:none;
-    background:var(--superficie-2);
+    width:34px; height:34px;
+    border:1px solid var(--line-strong);
+    background:none;
     font-size:1rem;
     cursor:pointer;
-    color:var(--verde);
+    color:var(--text);
   }
   .mes-titulo{
-    font-family:'Fraunces', serif;
+    font-family:'Space Grotesk', sans-serif;
     font-weight:600;
-    font-size:1.1rem;
-    color:var(--verde);
+    font-size:1.05rem;
+    color:var(--text);
     text-transform:capitalize;
   }
   .pagamento-item{
     display:flex;
     align-items:center;
     gap:12px;
-    padding:12px 0;
-    border-bottom:1px solid var(--borda);
+    padding:11px 0;
+    border-bottom:1px solid var(--line);
   }
   .pagamento-item:last-child{border-bottom:none;}
   .check-pago{
-    width:26px; height:26px;
-    border-radius:8px;
-    border:2px solid var(--borda);
+    width:24px; height:24px;
+    border:1px solid var(--line-strong);
     display:flex;
     align-items:center;
     justify-content:center;
     cursor:pointer;
     flex-shrink:0;
-    font-size:0.85rem;
-    color:var(--texto-sobre-cor);
+    font-size:0.8rem;
+    color:var(--bg);
   }
   .check-pago.pago{
-    background:var(--sálvia);
-    border-color:var(--sálvia);
+    background:var(--ok);
+    border-color:var(--ok);
   }
   .pagamento-info{flex:1;}
-  .pagamento-info .nome{font-weight:600; font-size:0.92rem;}
+  .pagamento-info .nome{font-weight:500; font-size:0.92rem;}
   .pagamento-info .data-pago{
-    font-size:0.75rem;
-    color:var(--texto-suave);
+    font-size:0.74rem;
+    color:var(--text-muted);
+    font-family:'IBM Plex Mono', monospace;
     margin-top:2px;
   }
   .pagamento-valor{
-    font-weight:700;
-    font-size:0.95rem;
-    color:var(--verde);
+    font-weight:600;
+    font-size:0.92rem;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--text);
   }
   .resumo-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:12px;
+    gap:10px;
     margin-bottom:16px;
   }
   .resumo-box{
-    background:var(--superficie-2);
-    border-radius:14px;
-    padding:14px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:12px;
   }
   .resumo-box .rotulo{
-    font-size:0.72rem;
-    color:var(--texto-suave);
-    font-weight:600;
+    font-size:0.7rem;
+    color:var(--text-muted);
   }
   .resumo-box .valor{
-    font-family:'Fraunces', serif;
-    font-size:1.5rem;
-    font-weight:700;
-    color:var(--verde);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:1.35rem;
+    font-weight:600;
+    color:var(--text);
     margin-top:4px;
   }
-  .resumo-box.destaque{
-    background:var(--verde-bloco);
-  }
-  .resumo-box.destaque .rotulo{color:var(--ambar-claro);}
-  .resumo-box.destaque .valor{color:var(--texto-sobre-cor);}
+  .resumo-box.destaque{ border-color:var(--amber); }
+  .resumo-box.destaque .rotulo{color:var(--amber);}
+  .resumo-box.destaque .valor{color:var(--amber);}
+  .resumo-box.saldo-negativo{ border-color:var(--warn); }
+  .resumo-box.saldo-negativo .rotulo, .resumo-box.saldo-negativo .valor{color:var(--warn);}
   .pendencia-linha{
     display:flex;
     justify-content:space-between;
     align-items:center;
     padding:9px 0;
-    border-bottom:1px solid var(--borda);
-    font-size:0.88rem;
+    border-bottom:1px solid var(--line);
+    font-size:0.86rem;
   }
   .pendencia-linha:last-child{border-bottom:none;}
   .pendencia-linha .nome-p{font-weight:500;}
-  .pendencia-linha .valor-p{color:var(--coral); font-weight:700;}
+  .pendencia-linha .valor-p{color:var(--warn); font-family:'IBM Plex Mono', monospace; font-weight:600;}
   .contagem-buffet{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -360,84 +349,90 @@
   }
   .contagem-auto{
     font-weight:400;
-    color:var(--sálvia);
+    color:var(--steel);
     text-transform:none;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem;
   }
   .despesa-item{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:11px 0;
-    border-bottom:1px solid var(--borda);
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
   }
   .despesa-item:last-child{border-bottom:none;}
-  .despesa-item .nome{font-weight:600; font-size:0.9rem;}
+  .despesa-item .nome{font-weight:500; font-size:0.9rem;}
   .despesa-item .valor-linha{
     display:flex;
     align-items:center;
     gap:10px;
   }
   .despesa-item .valor-linha .valor-num{
-    font-weight:700;
-    color:var(--verde);
-    font-size:0.92rem;
+    font-weight:600;
+    color:var(--text);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.9rem;
   }
   .despesa-item button.excluir{
-    border:none;
-    background:var(--superficie-2);
-    width:30px; height:30px;
-    border-radius:8px;
-    color:var(--coral);
+    border:1px solid var(--line-strong);
+    background:none;
+    width:28px; height:28px;
+    color:var(--warn);
     cursor:pointer;
   }
   .relatorio-preview{
-    background:var(--superficie-2);
-    border-radius:12px;
-    padding:16px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:14px;
     margin-top:14px;
-    font-size:0.88rem;
+    font-size:0.86rem;
     line-height:1.55;
   }
   .relatorio-preview h4{
-    font-family:'Fraunces', serif;
-    color:var(--verde);
-    font-size:1rem;
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--text);
+    font-size:0.98rem;
     margin-bottom:4px;
   }
   .relatorio-preview .subtitulo{
-    font-size:0.74rem;
-    color:var(--texto-suave);
+    font-size:0.72rem;
+    color:var(--text-muted);
     margin-bottom:12px;
+    font-family:'IBM Plex Mono', monospace;
   }
   .relatorio-linha{
     display:flex;
     justify-content:space-between;
     gap:10px;
     padding:6px 0;
-    border-bottom:1px dashed var(--borda);
+    border-bottom:1px solid var(--line);
   }
   .relatorio-linha:last-child{border-bottom:none;}
   .relatorio-linha .r-nome{flex:1;}
   .relatorio-linha .r-nome .r-sub{
     display:block;
-    font-size:0.76rem;
-    color:var(--texto-suave);
+    font-size:0.74rem;
+    color:var(--text-muted);
     margin-top:1px;
+    font-family:'IBM Plex Mono', monospace;
   }
   .relatorio-linha .r-valor{
-    font-weight:700;
+    font-weight:600;
     white-space:nowrap;
+    font-family:'IBM Plex Mono', monospace;
   }
-  .relatorio-status-pago{color:var(--sálvia);}
-  .relatorio-status-pendente{color:var(--coral);}
+  .relatorio-status-pago{color:var(--ok);}
+  .relatorio-status-pendente{color:var(--warn);}
   .relatorio-total{
     margin-top:10px;
     padding-top:10px;
-    border-top:2px solid var(--borda);
+    border-top:1px solid var(--line-strong);
     display:flex;
     justify-content:space-between;
-    font-weight:700;
-    color:var(--verde);
+    font-weight:600;
+    color:var(--text);
+    font-family:'IBM Plex Mono', monospace;
   }
   .relatorio-acoes{
     display:flex;
@@ -446,14 +441,12 @@
   }
   .relatorio-acoes button{
     flex:1;
-    padding:11px 8px;
-    border-radius:10px;
-    border:1.5px solid var(--borda);
-    background:var(--superficie);
-    font-family:'Inter',sans-serif;
-    font-weight:600;
-    font-size:0.82rem;
-    color:var(--verde);
+    padding:9px 8px;
+    border:1px solid var(--line-strong);
+    background:none;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.8rem;
+    color:var(--text);
     cursor:pointer;
   }
   #area-impressao{ display:none; }
@@ -461,12 +454,12 @@
     position:fixed;
     bottom:20px; left:50%;
     transform:translateX(-50%);
-    background:var(--verde-bloco);
-    color:var(--texto-sobre-cor);
-    padding:10px 18px;
-    border-radius:999px;
-    font-size:0.85rem;
-    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+    background:var(--surface-raised);
+    border:1px solid var(--line-strong);
+    color:var(--text);
+    padding:10px 16px;
+    font-size:0.84rem;
+    font-family:'IBM Plex Sans', sans-serif;
     opacity:0;
     pointer-events:none;
     transition:opacity .25s;
@@ -475,13 +468,14 @@
   .toast.show{opacity:1;}
   .rodape-versao{
     text-align:center;
-    font-size:0.68rem;
-    color:var(--texto-suave);
+    font-size:0.66rem;
+    color:var(--text-muted);
     padding:14px 0 4px;
+    font-family:'IBM Plex Mono', monospace;
   }
   .modal-overlay{
     position:fixed; inset:0;
-    background:rgba(0,0,0,0.65);
+    background:rgba(0,0,0,0.55);
     display:none;
     align-items:flex-end;
     justify-content:center;
@@ -489,33 +483,59 @@
   }
   .modal-overlay.show{display:flex;}
   .modal{
-    background:var(--superficie);
+    background:var(--surface-raised);
     width:100%;
-    max-width:640px;
-    border-radius:20px 20px 0 0;
-    padding:20px;
+    max-width:480px;
+    border-top:1px solid var(--line-strong);
+    padding:18px 16px 22px;
     max-height:80vh;
     overflow-y:auto;
   }
   .modal h3{
-    font-family:'Fraunces', serif;
-    color:var(--verde);
-    margin-bottom:14px;
-    font-size:1.1rem;
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--text);
+    margin-bottom:4px;
+    font-size:1.02rem;
   }
   .modal-fechar{
     display:block;
     width:100%;
     text-align:center;
-    margin-top:14px;
-    padding:11px;
-    border-radius:10px;
-    border:1.5px solid var(--borda);
-    background:var(--superficie-2);
-    color:var(--texto);
-    font-weight:600;
+    margin-top:8px;
+    padding:10px;
+    border:1px solid var(--line-strong);
+    background:none;
+    color:var(--text-muted);
+    font-family:'IBM Plex Sans', sans-serif;
     cursor:pointer;
   }
+  .lista-meses-modal{
+    max-height:55vh;
+    overflow-y:auto;
+    margin-top:10px;
+  }
+  .mes-modal-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 2px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .mes-modal-item:last-child{border-bottom:none;}
+  .mes-modal-item .check-pago{ flex-shrink:0; }
+  .mes-modal-item .mes-modal-nome{
+    flex:1;
+    font-weight:500;
+    font-size:0.88rem;
+    text-transform:capitalize;
+  }
+  .mes-modal-item .mes-modal-data{
+    font-size:0.74rem;
+    color:var(--text-muted);
+    font-family:'IBM Plex Mono', monospace;
+  }
+
   @media print{
     body.imprimindo > *:not(#area-impressao){ display:none !important; }
     body.imprimindo{ background:#fff; padding:0; }
@@ -525,8 +545,8 @@
       color:#000;
     }
     #area-impressao h3{
-      font-family:'Fraunces', serif;
-      color:#1F3A2E;
+      font-family:'Space Grotesk', sans-serif;
+      color:#14171A;
       font-size:1.3rem;
       margin-bottom:2px;
     }
@@ -673,7 +693,7 @@
   <section id="tab-relatorios" style="display:none;">
     <div class="card">
       <h2>Relatório geral (todos os meses)</h2>
-      <p style="font-size:0.82rem; color:var(--texto-suave); margin-bottom:2px;">Soma tudo desde janeiro/2026 até o mês atual, por funcionário.</p>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:2px;">Soma tudo desde janeiro/2026 até o mês atual, por funcionário.</p>
       <button class="btn-primario" id="btn-gerar-geral">Gerar relatório geral</button>
       <div class="relatorio-preview" id="preview-geral" style="display:none;"></div>
       <div class="relatorio-acoes" id="acoes-geral" style="display:none;">
@@ -722,7 +742,7 @@
   <section id="tab-resumo" style="display:none;">
     <div class="card">
       <h2>Saldo geral</h2>
-      <p style="font-size:0.82rem; color:var(--texto-suave); margin-bottom:12px;">Soma de tudo que já foi pago, menos o total de despesas.</p>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Soma de tudo que já foi pago, menos o total de despesas.</p>
       <div class="resumo-grid">
         <div class="resumo-box">
           <div class="rotulo">Total pago por todos</div>
@@ -770,7 +790,7 @@
     </div>
   </section>
 
-  <div class="rodape-versao">v7 · Confraternização PPV</div>
+  <div class="rodape-versao">v9 · Confraternização PPV</div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -786,11 +806,20 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-meses-overlay">
+  <div class="modal">
+    <h3 id="modal-meses-titulo">Meses de João</h3>
+    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Toque em um mês para marcar como pago ou pendente.</p>
+    <div class="lista-meses-modal" id="lista-meses-modal"></div>
+    <button class="modal-fechar" id="btn-fechar-modal-meses">Concluído</button>
+  </div>
+</div>
+
 <script>
 // ---------- PWA MANIFEST + ICON (embutidos, sem arquivos externos) ----------
 const svgIcon = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#2F6B4A"/>
+  <rect width="512" height="512" rx="96" fill="#14171A"/>
   <text x="256" y="330" font-size="260" text-anchor="middle" font-family="sans-serif">🍻</text>
 </svg>`;
 const iconBlob = new Blob([svgIcon], {type:'image/svg+xml'});
@@ -802,8 +831,8 @@ const manifest = {
   short_name: "Confra PPV",
   start_url: ".",
   display: "standalone",
-  background_color: "#14181A",
-  theme_color: "#2F6B4A",
+  background_color: "#14171A",
+  theme_color: "#14171A",
   icons: [
     { src: iconUrl, sizes: "512x512", type: "image/svg+xml" }
   ]
@@ -954,7 +983,7 @@ function renderFuncionarios(){
       : '';
     item.innerHTML = `
       <div class="funcionario-info">
-        <div class="nome">${escapeHtml(f.nome)}</div>
+        <div class="nome nome-clicavel" data-id="${f.id}">${escapeHtml(f.nome)} <span class="icone-calendario">🗓️</span></div>
         <div class="meta">
           <span class="tag-valor ${f.bebida === 'cerveja' ? 'tag-cerveja' : 'tag-sem'}">
             ${f.bebida === 'cerveja' ? '🍺 R$ ' + VALOR_CERVEJA : '🥤 R$ ' + VALOR_SEM}
@@ -966,6 +995,7 @@ function renderFuncionarios(){
         <button class="excluir" title="Excluir">🗑</button>
       </div>
     `;
+    item.querySelector('.nome-clicavel').addEventListener('click', () => abrirModalMeses(f.id));
     item.querySelector('.editar').addEventListener('click', () => editarFuncionario(f.id));
     item.querySelector('.excluir').addEventListener('click', () => excluirFuncionario(f.id));
     cont.appendChild(item);
@@ -995,6 +1025,62 @@ function excluirFuncionario(id){
   renderFuncionarios();
   mostrarToast('Funcionário excluído');
 }
+
+// ---------- MODAL: SELECIONAR MESES PAGOS/PENDENTES DE UM FUNCIONÁRIO ----------
+function listarMesesModal(){
+  const meses = [];
+  const anoFim = hojeReal.getFullYear() + 1;
+  for(let ano = 2026; ano <= anoFim; ano++){
+    for(let mes = 0; mes <= 11; mes++){
+      meses.push({ ano, mes });
+    }
+  }
+  return meses;
+}
+
+function abrirModalMeses(funcId){
+  const f = funcionarios.find(x => x.id === funcId);
+  if(!f) return;
+  document.getElementById('modal-meses-titulo').textContent = 'Meses de ' + f.nome;
+  renderListaMesesModal(funcId);
+  document.getElementById('modal-meses-overlay').classList.add('show');
+}
+
+function renderListaMesesModal(funcId){
+  const f = funcionarios.find(x => x.id === funcId);
+  if(!f) return;
+  const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
+  const cont = document.getElementById('lista-meses-modal');
+  cont.innerHTML = '';
+  listarMesesModal().forEach(m => {
+    const chave = chaveMs(m);
+    const reg = (pagamentos[chave] && pagamentos[chave][funcId]) || { pago:false, data:null };
+    const item = document.createElement('div');
+    item.className = 'mes-modal-item';
+    item.innerHTML = `
+      <div class="check-pago ${reg.pago ? 'pago' : ''}">${reg.pago ? '✓' : ''}</div>
+      <div class="mes-modal-nome">${MESES[m.mes].toLowerCase()} ${m.ano}</div>
+      <div class="mes-modal-data">${reg.pago && reg.data ? formatarData(reg.data) : 'R$ ' + valor}</div>
+    `;
+    item.addEventListener('click', () => {
+      if(!pagamentos[chave]) pagamentos[chave] = {};
+      if(reg.pago){
+        delete pagamentos[chave][funcId];
+      } else {
+        pagamentos[chave][funcId] = { pago:true, data: chave + '-01' };
+      }
+      salvarPagamentos();
+      renderListaMesesModal(funcId);
+    });
+    cont.appendChild(item);
+  });
+}
+
+document.getElementById('btn-fechar-modal-meses').addEventListener('click', () => {
+  document.getElementById('modal-meses-overlay').classList.remove('show');
+  renderPagamentos();
+  renderResumo();
+});
 
 // ---------- ABA PAGAMENTOS ----------
 const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -1155,7 +1241,8 @@ function renderResumo(){
   document.getElementById('saldo-final').textContent = 'R$ ' + saldo.toFixed(2).replace('.', ',');
   document.getElementById('saldo-rotulo').textContent = saldo >= 0 ? 'Saldo positivo' : 'Saldo negativo (falta)';
   const boxSaldo = document.getElementById('saldo-final').closest('.resumo-box');
-  boxSaldo.style.background = saldo >= 0 ? 'var(--verde)' : 'var(--coral)';
+  boxSaldo.classList.toggle('destaque', saldo >= 0);
+  boxSaldo.classList.toggle('saldo-negativo', saldo < 0);
 }
 
 // ---------- DESPESAS (BUFFET + OUTRAS) ----------
