@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Confraternização 2026</title>
+<link rel="manifest" id="manifest-link">
+<meta name="theme-color" content="#1F3A2E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" id="apple-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde: #1F3A2E;
+    --verde-claro: #2C4F3D;
+    --ambar: #C9A227;
+    --ambar-claro: #E0C15A;
+    --creme: #FAF6EC;
+    --creme-escuro: #F1EAD8;
+    --carvao: #232323;
+    --cinza: #6E6A5F;
+    --coral: #C25B45;
+    --sálvia: #4C7A5D;
+    --borda: #E3DCC8;
+    --branco: #FFFFFF;
+    --sombra: 0 2px 10px rgba(31,58,46,0.08);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background:var(--creme);
+    color:var(--carvao);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:90px;
+    min-height:100vh;
+  }
+  header.top{
+    background:var(--verde);
+    color:var(--creme);
+    padding:28px 20px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.top::after{
+    content:"";
+    position:absolute;
+    right:-30px; top:-30px;
+    width:140px; height:140px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(201,162,39,0.35), transparent 70%);
+  }
+  header.top h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.65rem;
+    letter-spacing:-0.01em;
+    position:relative;
+  }
+  header.top p{
+    margin-top:4px;
+    font-size:0.85rem;
+    color:var(--ambar-claro);
+    position:relative;
+  }
+  main{
+    max-width:640px;
+    margin:0 auto;
+    padding:18px 16px 20px;
+  }
+  nav.tabs{
+    display:flex;
+    background:var(--branco);
+    border-radius:14px;
+    padding:4px;
+    box-shadow:var(--sombra);
+    margin:-24px 16px 20px;
+    max-width:608px;
+    margin-left:auto; margin-right:auto;
+    position:relative;
+    z-index:2;
+  }
+  nav.tabs button{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:10px 3px;
+    font-family:'Inter', sans-serif;
+    font-size:0.72rem;
+    font-weight:600;
+    color:var(--cinza);
+    border-radius:10px;
+    cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  nav.tabs button.active{
+    background:var(--verde);
+    color:var(--creme);
+  }
+  .card{
+    background:var(--branco);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:var(--sombra);
+    margin-bottom:14px;
+  }
+  .card h2{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    font-weight:600;
+    color:var(--verde);
+    margin-bottom:14px;
+  }
+  label{
+    display:block;
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--cinza);
+    margin-bottom:5px;
+    margin-top:12px;
+  }
+  label:first-of-type{margin-top:0;}
+  input[type=text], select, input[type=date]{
+    width:100%;
+    padding:10px 12px;
+    border:1.5px solid var(--borda);
+    border-radius:10px;
+    font-size:0.95rem;
+    font-family:'Inter', sans-serif;
+    background:var(--creme-escuro);
+    color:var(--carvao);
+  }
+  input[type=text]:focus, select:focus, input[type=date]:focus{
+    outline:none;
+    border-color:var(--ambar);
+  }
+  .escolha-bebida{
+    display:flex;
+    gap:8px;
+    margin-top:6px;
+  }
+  .escolha-bebida button{
+    flex:1;
+    padding:11px 8px;
+    border-radius:10px;
+    border:1.5px solid var(--borda);
+    background:var(--creme-escuro);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    color:var(--cinza);
+    cursor:pointer;
+  }
+  .escolha-bebida button.sel-cerveja.on{
+    background:var(--ambar);
+    border-color:var(--ambar);
+    color:var(--verde);
+  }
+  .escolha-bebida button.sel-sem.on{
+    background:var(--sálvia);
+    border-color:var(--sálvia);
+    color:var(--branco);
+  }
+  .familiares-lista{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:8px;
+  }
+  .familiar-chip{
+    background:var(--creme-escuro);
+    border:1px solid var(--borda);
+    border-radius:999px;
+    padding:5px 10px 5px 12px;
+    font-size:0.8rem;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .familiar-chip button{
+    background:none;
+    border:none;
+    color:var(--coral);
+    font-size:0.95rem;
+    cursor:pointer;
+    line-height:1;
+  }
+  .add-familiar-row{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+  }
+  .add-familiar-row input{flex:1;}
+  .add-familiar-row button{
+    padding:0 16px;
+    border-radius:10px;
+    border:none;
+    background:var(--verde-claro);
+    color:var(--creme);
+    font-weight:600;
+    cursor:pointer;
+  }
+  .btn-primario{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:var(--verde);
+    color:var(--creme);
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:0.95rem;
+    margin-top:16px;
+    cursor:pointer;
+  }
+  .btn-primario:active{background:var(--verde-claro);}
+  .funcionario-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid var(--borda);
+  }
+  .funcionario-item:last-child{border-bottom:none;}
+  .funcionario-info .nome{
+    font-weight:600;
+    font-size:0.95rem;
+  }
+  .funcionario-info .meta{
+    font-size:0.78rem;
+    color:var(--cinza);
+    margin-top:2px;
+  }
+  .tag-valor{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:999px;
+    font-size:0.72rem;
+    font-weight:700;
+    margin-right:4px;
+  }
+  .tag-cerveja{background:rgba(201,162,39,0.18); color:#8a6d10;}
+  .tag-sem{background:rgba(76,122,93,0.16); color:var(--sálvia);}
+  .item-acoes{display:flex; gap:6px;}
+  .item-acoes button{
+    border:none;
+    background:var(--creme-escuro);
+    width:32px; height:32px;
+    border-radius:9px;
+    font-size:0.9rem;
+    cursor:pointer;
+  }
+  .item-acoes button.excluir{color:var(--coral);}
+  .vazio{
+    text-align:center;
+    padding:24px 10px;
+    color:var(--cinza);
+    font-size:0.88rem;
+  }
+  .mes-seletor{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+  }
+  .mes-seletor button{
+    width:36px; height:36px;
+    border-radius:10px;
+    border:none;
+    background:var(--creme-escuro);
+    font-size:1rem;
+    cursor:pointer;
+    color:var(--verde);
+  }
+  .mes-titulo{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.1rem;
+    color:var(--verde);
+    text-transform:capitalize;
+  }
+  .pagamento-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 0;
+    border-bottom:1px solid var(--borda);
+  }
+  .pagamento-item:last-child{border-bottom:none;}
+  .check-pago{
+    width:26px; height:26px;
+    border-radius:8px;
+    border:2px solid var(--borda);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    font-size:0.85rem;
+    color:var(--branco);
+  }
+  .check-pago.pago{
+    background:var(--sálvia);
+    border-color:var(--sálvia);
+  }
+  .pagamento-info{flex:1;}
+  .pagamento-info .nome{font-weight:600; font-size:0.92rem;}
+  .pagamento-info .data-pago{
+    font-size:0.75rem;
+    color:var(--cinza);
+    margin-top:2px;
+  }
+  .pagamento-valor{
+    font-weight:700;
+    font-size:0.95rem;
+    color:var(--verde);
+  }
+  .resumo-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .resumo-box{
+    background:var(--creme-escuro);
+    border-radius:14px;
+    padding:14px;
+  }
+  .resumo-box .rotulo{
+    font-size:0.72rem;
+    color:var(--cinza);
+    font-weight:600;
+  }
+  .resumo-box .valor{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
+    font-weight:700;
+    color:var(--verde);
+    margin-top:4px;
+  }
+  .resumo-box.destaque{
+    background:var(--verde);
+  }
+  .resumo-box.destaque .rotulo{color:var(--ambar-claro);}
+  .resumo-box.destaque .valor{color:var(--creme);}
+  .pendencia-linha{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:9px 0;
+    border-bottom:1px solid var(--borda);
+    font-size:0.88rem;
+  }
+  .pendencia-linha:last-child{border-bottom:none;}
+  .pendencia-linha .nome-p{font-weight:500;}
+  .pendencia-linha .valor-p{color:var(--coral); font-weight:700;}
+  .contagem-buffet{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0 12px;
+  }
+  .contagem-auto{
+    font-weight:400;
+    color:var(--sálvia);
+    text-transform:none;
+  }
+  .despesa-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:11px 0;
+    border-bottom:1px solid var(--borda);
+  }
+  .despesa-item:last-child{border-bottom:none;}
+  .despesa-item .nome{font-weight:600; font-size:0.9rem;}
+  .despesa-item .valor-linha{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .despesa-item .valor-linha .valor-num{
+    font-weight:700;
+    color:var(--verde);
+    font-size:0.92rem;
+  }
+  .despesa-item button.excluir{
+    border:none;
+    background:var(--creme-escuro);
+    width:30px; height:30px;
+    border-radius:8px;
+    color:var(--coral);
+    cursor:pointer;
+  }
+  .relatorio-preview{
+    background:var(--creme-escuro);
+    border-radius:12px;
+    padding:16px;
+    margin-top:14px;
+    font-size:0.88rem;
+    line-height:1.55;
+  }
+  .relatorio-preview h4{
+    font-family:'Fraunces', serif;
+    color:var(--verde);
+    font-size:1rem;
+    margin-bottom:4px;
+  }
+  .relatorio-preview .subtitulo{
+    font-size:0.74rem;
+    color:var(--cinza);
+    margin-bottom:12px;
+  }
+  .relatorio-linha{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--borda);
+  }
+  .relatorio-linha:last-child{border-bottom:none;}
+  .relatorio-linha .r-nome{flex:1;}
+  .relatorio-linha .r-nome .r-sub{
+    display:block;
+    font-size:0.76rem;
+    color:var(--cinza);
+    margin-top:1px;
+  }
+  .relatorio-linha .r-valor{
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .relatorio-status-pago{color:var(--sálvia);}
+  .relatorio-status-pendente{color:var(--coral);}
+  .relatorio-total{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:2px solid var(--borda);
+    display:flex;
+    justify-content:space-between;
+    font-weight:700;
+    color:var(--verde);
+  }
+  .relatorio-acoes{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+  }
+  .relatorio-acoes button{
+    flex:1;
+    padding:11px 8px;
+    border-radius:10px;
+    border:1.5px solid var(--borda);
+    background:var(--branco);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.82rem;
+    color:var(--verde);
+    cursor:pointer;
+  }
+  #area-impressao{ display:none; }
+  .toast{
+    position:fixed;
+    bottom:20px; left:50%;
+    transform:translateX(-50%);
+    background:var(--verde);
+    color:var(--creme);
+    padding:10px 18px;
+    border-radius:999px;
+    font-size:0.85rem;
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s;
+    z-index:100;
+  }
+  .toast.show{opacity:1;}
+  .rodape-versao{
+    text-align:center;
+    font-size:0.68rem;
+    color:var(--cinza);
+    padding:14px 0 4px;
+  }
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(35,35,35,0.45);
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:50;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal{
+    background:var(--branco);
+    width:100%;
+    max-width:640px;
+    border-radius:20px 20px 0 0;
+    padding:20px;
+    max-height:80vh;
+    overflow-y:auto;
+  }
+  .modal h3{
+    font-family:'Fraunces', serif;
+    color:var(--verde);
+    margin-bottom:14px;
+    font-size:1.1rem;
+  }
+  .modal-fechar{
+    display:block;
+    width:100%;
+    text-align:center;
+    margin-top:14px;
+    padding:11px;
+    border-radius:10px;
+    border:1.5px solid var(--borda);
+    background:var(--creme-escuro);
+    color:var(--carvao);
+    font-weight:600;
+    cursor:pointer;
+  }
+  @media print{
+    body.imprimindo > *:not(#area-impressao){ display:none !important; }
+    body.imprimindo{ background:#fff; padding:0; }
+    body.imprimindo #area-impressao{
+      display:block !important;
+      padding:0;
+      color:#000;
+    }
+    #area-impressao h3{
+      font-family:'Fraunces', serif;
+      color:#1F3A2E;
+      font-size:1.3rem;
+      margin-bottom:2px;
+    }
+    #area-impressao .subtitulo{
+      font-size:0.8rem;
+      color:#555;
+      margin-bottom:16px;
+    }
+    #area-impressao .relatorio-linha{
+      display:flex;
+      justify-content:space-between;
+      padding:7px 0;
+      border-bottom:1px solid #ddd;
+    }
+    #area-impressao .relatorio-total{
+      margin-top:12px;
+      padding-top:10px;
+      border-top:2px solid #333;
+      display:flex;
+      justify-content:space-between;
+      font-weight:700;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>🍻 Confraternização</h1>
+  <p>Controle de pagamentos · desde jan/2026</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="pagamentos">Pagamentos</button>
+  <button class="tab-btn" data-tab="funcionarios">Funcionários</button>
+  <button class="tab-btn" data-tab="despesas">Despesas</button>
+  <button class="tab-btn" data-tab="resumo">Resumo</button>
+  <button class="tab-btn" data-tab="relatorios">Relatórios</button>
+</nav>
+
+<main>
+
+  <!-- ABA PAGAMENTOS -->
+  <section id="tab-pagamentos">
+    <div class="card">
+      <div class="mes-seletor">
+        <button id="mes-anterior">‹</button>
+        <div class="mes-titulo" id="mes-titulo">Janeiro 2026</div>
+        <button id="mes-proximo">›</button>
+      </div>
+      <div id="lista-pagamentos"></div>
+    </div>
+  </section>
+
+  <!-- ABA FUNCIONÁRIOS -->
+  <section id="tab-funcionarios" style="display:none;">
+    <div class="card">
+      <h2 id="form-titulo">Novo funcionário</h2>
+      <label>Nome</label>
+      <input type="text" id="input-nome" placeholder="Nome do funcionário">
+
+      <label>Vai beber cerveja?</label>
+      <div class="escolha-bebida">
+        <button type="button" class="sel-cerveja" id="btn-cerveja">🍺 Cerveja — R$ 50</button>
+        <button type="button" class="sel-sem" id="btn-sem">🥤 Sem cerveja — R$ 30</button>
+      </div>
+
+      <label>Familiares que vai levar (opcional)</label>
+      <div class="add-familiar-row">
+        <input type="text" id="input-familiar" placeholder="Ex: esposa, filho...">
+        <select id="select-tipo-familiar" style="flex:0 0 110px;">
+          <option value="adulto">Adulto</option>
+          <option value="crianca">Criança</option>
+        </select>
+        <button type="button" id="btn-add-familiar">Adicionar</button>
+      </div>
+      <div class="familiares-lista" id="lista-familiares-form"></div>
+
+      <button class="btn-primario" id="btn-salvar-funcionario">Salvar funcionário</button>
+    </div>
+
+    <div class="card">
+      <h2>Funcionários cadastrados</h2>
+      <div id="lista-funcionarios"></div>
+    </div>
+  </section>
+
+  <!-- ABA DESPESAS -->
+  <section id="tab-despesas" style="display:none;">
+    <div class="card">
+      <h2>Buffet</h2>
+      <label>Valor por adulto (R$)</label>
+      <input type="text" inputmode="decimal" id="input-buffet-adulto" placeholder="Ex: 45">
+      <label>Valor por criança (R$)</label>
+      <input type="text" inputmode="decimal" id="input-buffet-crianca" placeholder="Ex: 20">
+
+      <div class="contagem-buffet">
+        <label>Nº de adultos <span class="contagem-auto" id="auto-adultos"></span></label>
+        <input type="text" inputmode="numeric" id="input-qtd-adultos">
+        <label>Nº de crianças <span class="contagem-auto" id="auto-criancas"></span></label>
+        <input type="text" inputmode="numeric" id="input-qtd-criancas">
+      </div>
+
+      <button class="btn-primario" id="btn-salvar-buffet">Salvar buffet</button>
+
+      <div class="resumo-grid" style="margin-top:16px;">
+        <div class="resumo-box">
+          <div class="rotulo">Total do buffet</div>
+          <div class="valor" id="buffet-total">R$ 0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Outras despesas</h2>
+      <label>Descrição</label>
+      <input type="text" id="input-despesa-nome" placeholder="Ex: Aluguel da Chácara">
+      <label>Valor (R$)</label>
+      <input type="text" inputmode="decimal" id="input-despesa-valor" placeholder="Ex: 400">
+      <button class="btn-primario" id="btn-add-despesa">Adicionar despesa</button>
+
+      <div id="lista-despesas" style="margin-top:14px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Total de despesas</h2>
+      <div class="resumo-grid">
+        <div class="resumo-box">
+          <div class="rotulo">Buffet</div>
+          <div class="valor" id="despesas-total-buffet">R$ 0</div>
+        </div>
+        <div class="resumo-box">
+          <div class="rotulo">Outras</div>
+          <div class="valor" id="despesas-total-outras">R$ 0</div>
+        </div>
+      </div>
+      <div class="resumo-box destaque" style="margin-top:4px;">
+        <div class="rotulo">Total geral de despesas</div>
+        <div class="valor" id="despesas-total-geral">R$ 0</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABA RELATÓRIOS -->
+  <section id="tab-relatorios" style="display:none;">
+    <div class="card">
+      <h2>Relatório de pagamentos</h2>
+      <div class="mes-seletor">
+        <button id="relatorio-mes-anterior">‹</button>
+        <div class="mes-titulo" id="relatorio-mes-titulo">Janeiro 2026</div>
+        <button id="relatorio-mes-proximo">›</button>
+      </div>
+      <button class="btn-primario" id="btn-gerar-pagamentos">Gerar relatório</button>
+      <div class="relatorio-preview" id="preview-pagamentos" style="display:none;"></div>
+      <div class="relatorio-acoes" id="acoes-pagamentos" style="display:none;">
+        <button id="btn-copiar-pagamentos">📋 Copiar texto</button>
+        <button id="btn-imprimir-pagamentos">🖨 Imprimir / PDF</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Relatório de despesas</h2>
+      <button class="btn-primario" id="btn-gerar-despesas">Gerar relatório</button>
+      <div class="relatorio-preview" id="preview-despesas" style="display:none;"></div>
+      <div class="relatorio-acoes" id="acoes-despesas" style="display:none;">
+        <button id="btn-copiar-despesas">📋 Copiar texto</button>
+        <button id="btn-imprimir-despesas">🖨 Imprimir / PDF</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Relação de participantes</h2>
+      <button class="btn-primario" id="btn-gerar-participantes">Gerar relatório</button>
+      <div class="relatorio-preview" id="preview-participantes" style="display:none;"></div>
+      <div class="relatorio-acoes" id="acoes-participantes" style="display:none;">
+        <button id="btn-copiar-participantes">📋 Copiar texto</button>
+        <button id="btn-imprimir-participantes">🖨 Imprimir / PDF</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABA RESUMO -->
+  <section id="tab-resumo" style="display:none;">
+    <div class="card">
+      <h2>Saldo geral</h2>
+      <p style="font-size:0.82rem; color:var(--cinza); margin-bottom:12px;">Soma de tudo que já foi pago, menos o total de despesas.</p>
+      <div class="resumo-grid">
+        <div class="resumo-box">
+          <div class="rotulo">Total pago por todos</div>
+          <div class="valor" id="saldo-arrecadado">R$ 0</div>
+        </div>
+        <div class="resumo-box">
+          <div class="rotulo">Total de despesas</div>
+          <div class="valor" id="saldo-despesas">R$ 0</div>
+        </div>
+      </div>
+      <div class="resumo-box destaque" style="margin-top:4px;">
+        <div class="rotulo" id="saldo-rotulo">Saldo</div>
+        <div class="valor" id="saldo-final">R$ 0</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 id="resumo-mes-titulo">Resumo — Janeiro 2026</h2>
+      <div class="resumo-grid">
+        <div class="resumo-box destaque">
+          <div class="rotulo">Arrecadado no mês</div>
+          <div class="valor" id="resumo-arrecadado">R$ 0</div>
+        </div>
+        <div class="resumo-box">
+          <div class="rotulo">Pendente no mês</div>
+          <div class="valor" id="resumo-pendente">R$ 0</div>
+        </div>
+      </div>
+      <h2 style="margin-top:6px;">Quem ainda não pagou</h2>
+      <div id="lista-pendentes"></div>
+    </div>
+
+    <div class="card">
+      <h2>Total geral (2026)</h2>
+      <div class="resumo-grid">
+        <div class="resumo-box">
+          <div class="rotulo">Total arrecadado</div>
+          <div class="valor" id="resumo-total-ano">R$ 0</div>
+        </div>
+        <div class="resumo-box">
+          <div class="rotulo">Total previsto</div>
+          <div class="valor" id="resumo-previsto-ano">R$ 0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rodape-versao">v4 · Confraternização de Final de Ano</div>
+</main>
+
+<div class="toast" id="toast"></div>
+<div id="area-impressao"></div>
+
+<div class="modal-overlay" id="modal-data-overlay">
+  <div class="modal">
+    <h3>Data do pagamento</h3>
+    <label>Data em que foi pago</label>
+    <input type="date" id="input-data-pagamento">
+    <button class="btn-primario" id="btn-confirmar-pagamento" style="margin-top:14px;">Confirmar pagamento</button>
+    <button class="modal-fechar" id="btn-cancelar-pagamento">Cancelar</button>
+  </div>
+</div>
+
+<script>
+// ---------- PWA MANIFEST + ICON (embutidos, sem arquivos externos) ----------
+const svgIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1F3A2E"/>
+  <text x="256" y="330" font-size="260" text-anchor="middle" font-family="sans-serif">🍻</text>
+</svg>`;
+const iconBlob = new Blob([svgIcon], {type:'image/svg+xml'});
+const iconUrl = URL.createObjectURL(iconBlob);
+document.getElementById('apple-icon').setAttribute('href', iconUrl);
+
+const manifest = {
+  name: "Confraternização 2026",
+  short_name: "Confraternização",
+  start_url: ".",
+  display: "standalone",
+  background_color: "#FAF6EC",
+  theme_color: "#1F3A2E",
+  icons: [
+    { src: iconUrl, sizes: "512x512", type: "image/svg+xml" }
+  ]
+};
+const manifestBlob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+document.getElementById('manifest-link').setAttribute('href', URL.createObjectURL(manifestBlob));
+
+// ---------- DADOS ----------
+const STORAGE_KEY = 'confraternizacao_funcionarios';
+const PAGAMENTOS_KEY = 'confraternizacao_pagamentos';
+const VALOR_CERVEJA = 50;
+const VALOR_SEM = 30;
+
+let funcionarios = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+let pagamentos = JSON.parse(localStorage.getItem(PAGAMENTOS_KEY) || '{}'); // { "2026-01": { funcId: {pago:true, data:"2026-01-01"} } }
+
+function salvarFuncionarios(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(funcionarios)); }
+function salvarPagamentos(){ localStorage.setItem(PAGAMENTOS_KEY, JSON.stringify(pagamentos)); }
+
+function uid(){ return 'f' + Date.now() + Math.floor(Math.random()*1000); }
+
+// ---------- NAVEGAÇÃO POR ABAS ----------
+const tabs = document.querySelectorAll('.tab-btn');
+tabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabs.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-pagamentos').style.display = 'none';
+    document.getElementById('tab-funcionarios').style.display = 'none';
+    document.getElementById('tab-despesas').style.display = 'none';
+    document.getElementById('tab-resumo').style.display = 'none';
+    document.getElementById('tab-relatorios').style.display = 'none';
+    document.getElementById('tab-' + btn.dataset.tab).style.display = 'block';
+    if(btn.dataset.tab === 'pagamentos') renderPagamentos();
+    if(btn.dataset.tab === 'funcionarios') renderFuncionarios();
+    if(btn.dataset.tab === 'despesas') renderDespesas();
+    if(btn.dataset.tab === 'resumo') renderResumo();
+    if(btn.dataset.tab === 'relatorios') renderTituloMesRelatorio();
+  });
+});
+
+function mostrarToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ---------- FORM FUNCIONÁRIO ----------
+let bebidaSelecionada = null; // 'cerveja' | 'sem'
+let familiaresTemp = [];
+let editandoId = null;
+
+document.getElementById('btn-cerveja').addEventListener('click', () => {
+  bebidaSelecionada = 'cerveja';
+  document.getElementById('btn-cerveja').classList.add('on');
+  document.getElementById('btn-sem').classList.remove('on');
+});
+document.getElementById('btn-sem').addEventListener('click', () => {
+  bebidaSelecionada = 'sem';
+  document.getElementById('btn-sem').classList.add('on');
+  document.getElementById('btn-cerveja').classList.remove('on');
+});
+
+document.getElementById('btn-add-familiar').addEventListener('click', adicionarFamiliarTemp);
+document.getElementById('input-familiar').addEventListener('keypress', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); adicionarFamiliarTemp(); }
+});
+function adicionarFamiliarTemp(){
+  const input = document.getElementById('input-familiar');
+  const nome = input.value.trim();
+  if(!nome) return;
+  const tipo = document.getElementById('select-tipo-familiar').value;
+  familiaresTemp.push({ nome, tipo });
+  input.value = '';
+  renderFamiliaresForm();
+}
+function renderFamiliaresForm(){
+  const cont = document.getElementById('lista-familiares-form');
+  cont.innerHTML = '';
+  familiaresTemp.forEach((fam, idx) => {
+    const chip = document.createElement('div');
+    chip.className = 'familiar-chip';
+    const emoji = fam.tipo === 'crianca' ? '🧒' : '🧑';
+    chip.innerHTML = `<span>${emoji} ${escapeHtml(fam.nome)}</span><button data-idx="${idx}">×</button>`;
+    chip.querySelector('button').addEventListener('click', () => {
+      familiaresTemp.splice(idx, 1);
+      renderFamiliaresForm();
+    });
+    cont.appendChild(chip);
+  });
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+document.getElementById('btn-salvar-funcionario').addEventListener('click', () => {
+  const nome = document.getElementById('input-nome').value.trim();
+  if(!nome){ mostrarToast('Digite o nome do funcionário'); return; }
+  if(!bebidaSelecionada){ mostrarToast('Escolha se vai beber cerveja ou não'); return; }
+
+  if(editandoId){
+    const f = funcionarios.find(x => x.id === editandoId);
+    f.nome = nome;
+    f.bebida = bebidaSelecionada;
+    f.familiares = [...familiaresTemp];
+  } else {
+    funcionarios.push({
+      id: uid(),
+      nome: nome,
+      bebida: bebidaSelecionada,
+      familiares: [...familiaresTemp]
+    });
+  }
+  salvarFuncionarios();
+  limparFormFuncionario();
+  renderFuncionarios();
+  mostrarToast('Funcionário salvo!');
+});
+
+function limparFormFuncionario(){
+  editandoId = null;
+  document.getElementById('form-titulo').textContent = 'Novo funcionário';
+  document.getElementById('input-nome').value = '';
+  bebidaSelecionada = null;
+  document.getElementById('btn-cerveja').classList.remove('on');
+  document.getElementById('btn-sem').classList.remove('on');
+  familiaresTemp = [];
+  renderFamiliaresForm();
+}
+
+function renderFuncionarios(){
+  const cont = document.getElementById('lista-funcionarios');
+  cont.innerHTML = '';
+  if(funcionarios.length === 0){
+    cont.innerHTML = '<div class="vazio">Nenhum funcionário cadastrado ainda.</div>';
+    return;
+  }
+  funcionarios.forEach(f => {
+    const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
+    const item = document.createElement('div');
+    item.className = 'funcionario-item';
+    const familiaresTxt = f.familiares && f.familiares.length
+      ? ' · Leva: ' + f.familiares.map(fam => typeof fam === 'string' ? fam : fam.nome + (fam.tipo === 'crianca' ? ' (criança)' : '')).join(', ')
+      : '';
+    item.innerHTML = `
+      <div class="funcionario-info">
+        <div class="nome">${escapeHtml(f.nome)}</div>
+        <div class="meta">
+          <span class="tag-valor ${f.bebida === 'cerveja' ? 'tag-cerveja' : 'tag-sem'}">
+            ${f.bebida === 'cerveja' ? '🍺 R$ ' + VALOR_CERVEJA : '🥤 R$ ' + VALOR_SEM}
+          </span>${familiaresTxt}
+        </div>
+      </div>
+      <div class="item-acoes">
+        <button class="editar" title="Editar">✎</button>
+        <button class="excluir" title="Excluir">🗑</button>
+      </div>
+    `;
+    item.querySelector('.editar').addEventListener('click', () => editarFuncionario(f.id));
+    item.querySelector('.excluir').addEventListener('click', () => excluirFuncionario(f.id));
+    cont.appendChild(item);
+  });
+}
+
+function editarFuncionario(id){
+  const f = funcionarios.find(x => x.id === id);
+  if(!f) return;
+  editandoId = id;
+  document.getElementById('form-titulo').textContent = 'Editar funcionário';
+  document.getElementById('input-nome').value = f.nome;
+  bebidaSelecionada = f.bebida;
+  document.getElementById('btn-cerveja').classList.toggle('on', f.bebida === 'cerveja');
+  document.getElementById('btn-sem').classList.toggle('on', f.bebida === 'sem');
+  familiaresTemp = [...(f.familiares || [])];
+  renderFamiliaresForm();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function excluirFuncionario(id){
+  if(!confirm('Excluir este funcionário? O histórico de pagamentos dele também será removido.')) return;
+  funcionarios = funcionarios.filter(x => x.id !== id);
+  salvarFuncionarios();
+  Object.keys(pagamentos).forEach(mes => { delete pagamentos[mes][id]; });
+  salvarPagamentos();
+  renderFuncionarios();
+  mostrarToast('Funcionário excluído');
+}
+
+// ---------- ABA PAGAMENTOS ----------
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+let mesAtual = { ano: 2026, mes: 0 }; // mes: 0-indexed, começa em Janeiro/2026
+
+function chaveMs(m){ return m.ano + '-' + String(m.mes + 1).padStart(2,'0'); }
+
+document.getElementById('mes-anterior').addEventListener('click', () => {
+  mesAtual.mes--;
+  if(mesAtual.mes < 0){ mesAtual.mes = 11; mesAtual.ano--; }
+  renderPagamentos();
+});
+document.getElementById('mes-proximo').addEventListener('click', () => {
+  mesAtual.mes++;
+  if(mesAtual.mes > 11){ mesAtual.mes = 0; mesAtual.ano++; }
+  renderPagamentos();
+});
+
+let pagamentoPendenteFuncId = null;
+
+function renderPagamentos(){
+  document.getElementById('mes-titulo').textContent = MESES[mesAtual.mes] + ' ' + mesAtual.ano;
+  const chave = chaveMs(mesAtual);
+  if(!pagamentos[chave]) pagamentos[chave] = {};
+  const cont = document.getElementById('lista-pagamentos');
+  cont.innerHTML = '';
+
+  if(funcionarios.length === 0){
+    cont.innerHTML = '<div class="vazio">Cadastre funcionários na aba "Funcionários" primeiro.</div>';
+    return;
+  }
+
+  funcionarios.forEach(f => {
+    const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
+    const reg = pagamentos[chave][f.id] || { pago:false, data:null };
+    const item = document.createElement('div');
+    item.className = 'pagamento-item';
+    item.innerHTML = `
+      <div class="check-pago ${reg.pago ? 'pago' : ''}">${reg.pago ? '✓' : ''}</div>
+      <div class="pagamento-info">
+        <div class="nome">${escapeHtml(f.nome)}</div>
+        <div class="data-pago">${reg.pago && reg.data ? 'Pago em ' + formatarData(reg.data) : (f.bebida === 'cerveja' ? '🍺 leva cerveja' : '🥤 sem cerveja')}</div>
+      </div>
+      <div class="pagamento-valor">R$ ${valor}</div>
+    `;
+    item.querySelector('.check-pago').addEventListener('click', () => {
+      if(reg.pago){
+        // desmarcar
+        delete pagamentos[chave][f.id];
+        salvarPagamentos();
+        renderPagamentos();
+      } else {
+        abrirModalData(f.id, chave);
+      }
+    });
+    cont.appendChild(item);
+  });
+}
+
+function formatarData(iso){
+  const [ano,mes,dia] = iso.split('-');
+  return dia + '/' + mes + '/' + ano;
+}
+
+function abrirModalData(funcId, chave){
+  pagamentoPendenteFuncId = { funcId, chave };
+  document.getElementById('input-data-pagamento').value = chave + '-01';
+  document.getElementById('modal-data-overlay').classList.add('show');
+}
+document.getElementById('btn-cancelar-pagamento').addEventListener('click', () => {
+  document.getElementById('modal-data-overlay').classList.remove('show');
+  pagamentoPendenteFuncId = null;
+});
+document.getElementById('btn-confirmar-pagamento').addEventListener('click', () => {
+  if(!pagamentoPendenteFuncId) return;
+  const data = document.getElementById('input-data-pagamento').value;
+  if(!data){ mostrarToast('Escolha uma data'); return; }
+  const { funcId, chave } = pagamentoPendenteFuncId;
+  pagamentos[chave][funcId] = { pago:true, data: data };
+  salvarPagamentos();
+  document.getElementById('modal-data-overlay').classList.remove('show');
+  pagamentoPendenteFuncId = null;
+  renderPagamentos();
+  mostrarToast('Pagamento registrado!');
+});
+
+// ---------- ABA RESUMO ----------
+function renderResumo(){
+  const chave = chaveMs(mesAtual);
+  document.getElementById('resumo-mes-titulo').textContent = 'Resumo — ' + MESES[mesAtual.mes] + ' ' + mesAtual.ano;
+  const regMes = pagamentos[chave] || {};
+
+  let arrecadado = 0, pendente = 0;
+  const pendentes = [];
+
+  funcionarios.forEach(f => {
+    const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
+    if(regMes[f.id] && regMes[f.id].pago){
+      arrecadado += valor;
+    } else {
+      pendente += valor;
+      pendentes.push({ nome: f.nome, valor });
+    }
+  });
+
+  document.getElementById('resumo-arrecadado').textContent = 'R$ ' + arrecadado;
+  document.getElementById('resumo-pendente').textContent = 'R$ ' + pendente;
+
+  const contPend = document.getElementById('lista-pendentes');
+  contPend.innerHTML = '';
+  if(pendentes.length === 0){
+    contPend.innerHTML = '<div class="vazio">Todo mundo já pagou este mês! 🎉</div>';
+  } else {
+    pendentes.forEach(p => {
+      const linha = document.createElement('div');
+      linha.className = 'pendencia-linha';
+      linha.innerHTML = `<span class="nome-p">${escapeHtml(p.nome)}</span><span class="valor-p">R$ ${p.valor}</span>`;
+      contPend.appendChild(linha);
+    });
+  }
+
+  // total geral do ano corrente (soma de todos os meses já registrados daquele ano)
+  let totalAno = 0;
+  let previstoAno = 0;
+  const totalPorFuncionario = funcionarios.reduce((soma, f) => soma + (f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM), 0);
+
+  Object.keys(pagamentos).forEach(chaveM => {
+    if(chaveM.startsWith(mesAtual.ano + '-')){
+      Object.keys(pagamentos[chaveM]).forEach(fid => {
+        if(pagamentos[chaveM][fid].pago){
+          const f = funcionarios.find(x => x.id === fid);
+          if(f) totalAno += (f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM);
+        }
+      });
+    }
+  });
+  previstoAno = totalPorFuncionario * (mesAtual.mes + 1);
+
+  document.getElementById('resumo-total-ano').textContent = 'R$ ' + totalAno;
+  document.getElementById('resumo-previsto-ano').textContent = 'R$ ' + previstoAno;
+
+  // Saldo geral do evento (todos os meses/anos já pagos - despesas totais)
+  let totalArrecadadoGeral = 0;
+  Object.keys(pagamentos).forEach(chaveM => {
+    Object.keys(pagamentos[chaveM]).forEach(fid => {
+      if(pagamentos[chaveM][fid].pago){
+        const f = funcionarios.find(x => x.id === fid);
+        if(f) totalArrecadadoGeral += (f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM);
+      }
+    });
+  });
+  const totalDespesasGeral = calcularTotalBuffet() + calcularTotalOutrasDespesas();
+  const saldo = totalArrecadadoGeral - totalDespesasGeral;
+
+  document.getElementById('saldo-arrecadado').textContent = 'R$ ' + totalArrecadadoGeral.toFixed(2).replace('.', ',');
+  document.getElementById('saldo-despesas').textContent = 'R$ ' + totalDespesasGeral.toFixed(2).replace('.', ',');
+  document.getElementById('saldo-final').textContent = 'R$ ' + saldo.toFixed(2).replace('.', ',');
+  document.getElementById('saldo-rotulo').textContent = saldo >= 0 ? 'Saldo positivo' : 'Saldo negativo (falta)';
+  const boxSaldo = document.getElementById('saldo-final').closest('.resumo-box');
+  boxSaldo.style.background = saldo >= 0 ? 'var(--verde)' : 'var(--coral)';
+}
+
+// ---------- DESPESAS (BUFFET + OUTRAS) ----------
+const DESPESAS_KEY = 'confraternizacao_despesas';
+const BUFFET_KEY = 'confraternizacao_buffet';
+
+let despesas = JSON.parse(localStorage.getItem(DESPESAS_KEY) || '[]');
+let buffet = JSON.parse(localStorage.getItem(BUFFET_KEY) || '{}');
+// buffet = { valorAdulto, valorCrianca, qtdAdultosManual, qtdCriancasManual }
+
+function salvarDespesas(){ localStorage.setItem(DESPESAS_KEY, JSON.stringify(despesas)); }
+function salvarBuffet(){ localStorage.setItem(BUFFET_KEY, JSON.stringify(buffet)); }
+
+function contarAdultosECriancas(){
+  let adultos = funcionarios.length; // cada funcionário conta como 1 adulto
+  let criancas = 0;
+  funcionarios.forEach(f => {
+    (f.familiares || []).forEach(fam => {
+      const tipo = typeof fam === 'string' ? 'adulto' : fam.tipo;
+      if(tipo === 'crianca') criancas++;
+      else adultos++;
+    });
+  });
+  return { adultos, criancas };
+}
+
+function numero(valorStr){
+  const n = parseFloat(String(valorStr).replace(',', '.'));
+  return isNaN(n) ? 0 : n;
+}
+
+function moeda(v){
+  return 'R$ ' + (v || 0).toFixed(2).replace('.', ',');
+}
+
+function obterDetalheBuffet(){
+  const auto = contarAdultosECriancas();
+  const qtdAdultos = (buffet.qtdAdultosManual !== undefined && buffet.qtdAdultosManual !== null && buffet.qtdAdultosManual !== '')
+    ? numero(buffet.qtdAdultosManual) : auto.adultos;
+  const qtdCriancas = (buffet.qtdCriancasManual !== undefined && buffet.qtdCriancasManual !== null && buffet.qtdCriancasManual !== '')
+    ? numero(buffet.qtdCriancasManual) : auto.criancas;
+  const valorAdulto = numero(buffet.valorAdulto);
+  const valorCrianca = numero(buffet.valorCrianca);
+  const total = (qtdAdultos * valorAdulto) + (qtdCriancas * valorCrianca);
+  return { qtdAdultos, qtdCriancas, valorAdulto, valorCrianca, total };
+}
+
+function calcularTotalBuffet(){
+  return obterDetalheBuffet().total;
+}
+
+function calcularTotalOutrasDespesas(){
+  return despesas.reduce((soma, d) => soma + numero(d.valor), 0);
+}
+
+function renderDespesas(){
+  const auto = contarAdultosECriancas();
+  document.getElementById('auto-adultos').textContent = '(cadastrados: ' + auto.adultos + ')';
+  document.getElementById('auto-criancas').textContent = '(cadastradas: ' + auto.criancas + ')';
+
+  document.getElementById('input-buffet-adulto').value = buffet.valorAdulto || '';
+  document.getElementById('input-buffet-crianca').value = buffet.valorCrianca || '';
+  document.getElementById('input-qtd-adultos').value = buffet.qtdAdultosManual !== undefined ? buffet.qtdAdultosManual : '';
+  document.getElementById('input-qtd-criancas').value = buffet.qtdCriancasManual !== undefined ? buffet.qtdCriancasManual : '';
+  document.getElementById('input-qtd-adultos').placeholder = String(auto.adultos);
+  document.getElementById('input-qtd-criancas').placeholder = String(auto.criancas);
+
+  const totalBuffet = calcularTotalBuffet();
+  document.getElementById('buffet-total').textContent = 'R$ ' + totalBuffet.toFixed(2).replace('.', ',');
+  document.getElementById('despesas-total-buffet').textContent = 'R$ ' + totalBuffet.toFixed(2).replace('.', ',');
+
+  const totalOutras = calcularTotalOutrasDespesas();
+  document.getElementById('despesas-total-outras').textContent = 'R$ ' + totalOutras.toFixed(2).replace('.', ',');
+  document.getElementById('despesas-total-geral').textContent = 'R$ ' + (totalBuffet + totalOutras).toFixed(2).replace('.', ',');
+
+  const cont = document.getElementById('lista-despesas');
+  cont.innerHTML = '';
+  if(despesas.length === 0){
+    cont.innerHTML = '<div class="vazio">Nenhuma despesa adicionada ainda.</div>';
+  } else {
+    despesas.forEach(d => {
+      const item = document.createElement('div');
+      item.className = 'despesa-item';
+      item.innerHTML = `
+        <div class="nome">${escapeHtml(d.nome)}</div>
+        <div class="valor-linha">
+          <span class="valor-num">R$ ${numero(d.valor).toFixed(2).replace('.', ',')}</span>
+          <button class="excluir" title="Excluir">🗑</button>
+        </div>
+      `;
+      item.querySelector('.excluir').addEventListener('click', () => {
+        despesas = despesas.filter(x => x.id !== d.id);
+        salvarDespesas();
+        renderDespesas();
+      });
+      cont.appendChild(item);
+    });
+  }
+}
+
+document.getElementById('btn-salvar-buffet').addEventListener('click', () => {
+  buffet.valorAdulto = document.getElementById('input-buffet-adulto').value.trim();
+  buffet.valorCrianca = document.getElementById('input-buffet-crianca').value.trim();
+  buffet.qtdAdultosManual = document.getElementById('input-qtd-adultos').value.trim();
+  buffet.qtdCriancasManual = document.getElementById('input-qtd-criancas').value.trim();
+  salvarBuffet();
+  renderDespesas();
+  mostrarToast('Buffet atualizado!');
+});
+
+document.getElementById('btn-add-despesa').addEventListener('click', () => {
+  const nome = document.getElementById('input-despesa-nome').value.trim();
+  const valor = document.getElementById('input-despesa-valor').value.trim();
+  if(!nome){ mostrarToast('Digite a descrição da despesa'); return; }
+  if(!valor || numero(valor) <= 0){ mostrarToast('Digite um valor válido'); return; }
+  despesas.push({ id: uid(), nome, valor });
+  salvarDespesas();
+  document.getElementById('input-despesa-nome').value = '';
+  document.getElementById('input-despesa-valor').value = '';
+  renderDespesas();
+  mostrarToast('Despesa adicionada!');
+});
+
+// ---------- RELATÓRIOS ----------
+let mesRelatorio = { ano: 2026, mes: 0 };
+let textoParaCopiar = '';
+
+function renderTituloMesRelatorio(){
+  document.getElementById('relatorio-mes-titulo').textContent = MESES[mesRelatorio.mes] + ' ' + mesRelatorio.ano;
+}
+document.getElementById('relatorio-mes-anterior').addEventListener('click', () => {
+  mesRelatorio.mes--;
+  if(mesRelatorio.mes < 0){ mesRelatorio.mes = 11; mesRelatorio.ano--; }
+  renderTituloMesRelatorio();
+  document.getElementById('preview-pagamentos').style.display = 'none';
+  document.getElementById('acoes-pagamentos').style.display = 'none';
+});
+document.getElementById('relatorio-mes-proximo').addEventListener('click', () => {
+  mesRelatorio.mes++;
+  if(mesRelatorio.mes > 11){ mesRelatorio.mes = 0; mesRelatorio.ano++; }
+  renderTituloMesRelatorio();
+  document.getElementById('preview-pagamentos').style.display = 'none';
+  document.getElementById('acoes-pagamentos').style.display = 'none';
+});
+
+function copiarTexto(texto){
+  const finalizar = () => mostrarToast('Texto copiado!');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(texto).then(finalizar).catch(() => copiarTextoFallback(texto, finalizar));
+  } else {
+    copiarTextoFallback(texto, finalizar);
+  }
+}
+function copiarTextoFallback(texto, callback){
+  const area = document.createElement('textarea');
+  area.value = texto;
+  area.style.position = 'fixed';
+  area.style.opacity = '0';
+  document.body.appendChild(area);
+  area.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(area);
+  callback();
+}
+
+function imprimir(htmlConteudo){
+  document.getElementById('area-impressao').innerHTML = htmlConteudo;
+  document.body.classList.add('imprimindo');
+  window.print();
+}
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('imprimindo');
+});
+
+// --- Relatório de pagamentos ---
+document.getElementById('btn-gerar-pagamentos').addEventListener('click', () => {
+  const chave = chaveMs(mesRelatorio);
+  const reg = pagamentos[chave] || {};
+  let totalPago = 0, totalPendente = 0;
+  let linhasHtml = '', linhasTexto = '';
+
+  if(funcionarios.length === 0){
+    document.getElementById('preview-pagamentos').innerHTML = '<div class="vazio">Nenhum funcionário cadastrado ainda.</div>';
+    document.getElementById('preview-pagamentos').style.display = 'block';
+    document.getElementById('acoes-pagamentos').style.display = 'none';
+    return;
+  }
+
+  funcionarios.forEach(f => {
+    const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
+    const r = reg[f.id];
+    const pago = r && r.pago;
+    if(pago){ totalPago += valor; } else { totalPendente += valor; }
+    const statusTxt = pago ? ('pago em ' + formatarData(r.data)) : 'pendente';
+    linhasHtml += `<div class="relatorio-linha">
+      <div class="r-nome">${escapeHtml(f.nome)}<span class="r-sub">${pago ? '✅ ' : '❌ '}${statusTxt}</span></div>
+      <div class="r-valor ${pago ? 'relatorio-status-pago' : 'relatorio-status-pendente'}">${moeda(valor)}</div>
+    </div>`;
+    linhasTexto += `${pago ? '✅' : '❌'} ${f.nome} — ${moeda(valor)} (${statusTxt})\n`;
+  });
+
+  const titulo = `Relatório de Pagamentos — ${MESES[mesRelatorio.mes]} ${mesRelatorio.ano}`;
+  const dataGeracao = 'Gerado em ' + new Date().toLocaleDateString('pt-BR');
+
+  document.getElementById('preview-pagamentos').innerHTML = `
+    <h4>${titulo}</h4>
+    <div class="subtitulo">${dataGeracao}</div>
+    ${linhasHtml}
+    <div class="relatorio-total"><span>Arrecadado</span><span>${moeda(totalPago)}</span></div>
+    <div class="relatorio-total"><span>Pendente</span><span>${moeda(totalPendente)}</span></div>
+  `;
+  document.getElementById('preview-pagamentos').style.display = 'block';
+  document.getElementById('acoes-pagamentos').style.display = 'flex';
+
+  textoParaCopiar = `*${titulo}*\n\n${linhasTexto}\nTotal arrecadado: ${moeda(totalPago)}\nTotal pendente: ${moeda(totalPendente)}`;
+  document.getElementById('btn-copiar-pagamentos').onclick = () => copiarTexto(textoParaCopiar);
+  document.getElementById('btn-imprimir-pagamentos').onclick = () => imprimir(`
+    <h3>${titulo}</h3>
+    <div class="subtitulo">${dataGeracao}</div>
+    ${linhasHtml}
+    <div class="relatorio-total"><span>Arrecadado</span><span>${moeda(totalPago)}</span></div>
+    <div class="relatorio-total"><span>Pendente</span><span>${moeda(totalPendente)}</span></div>
+  `);
+});
+
+// --- Relatório de despesas ---
+document.getElementById('btn-gerar-despesas').addEventListener('click', () => {
+  const det = obterDetalheBuffet();
+  let linhasHtml = '', linhasTexto = '';
+
+  linhasHtml += `<div class="relatorio-linha">
+    <div class="r-nome">Buffet<span class="r-sub">${det.qtdAdultos} adultos × ${moeda(det.valorAdulto)} + ${det.qtdCriancas} crianças × ${moeda(det.valorCrianca)}</span></div>
+    <div class="r-valor">${moeda(det.total)}</div>
+  </div>`;
+  linhasTexto += `Buffet (${det.qtdAdultos} adultos × ${moeda(det.valorAdulto)} + ${det.qtdCriancas} crianças × ${moeda(det.valorCrianca)}): ${moeda(det.total)}\n`;
+
+  despesas.forEach(d => {
+    linhasHtml += `<div class="relatorio-linha">
+      <div class="r-nome">${escapeHtml(d.nome)}</div>
+      <div class="r-valor">${moeda(numero(d.valor))}</div>
+    </div>`;
+    linhasTexto += `${d.nome}: ${moeda(numero(d.valor))}\n`;
+  });
+
+  const totalGeral = det.total + calcularTotalOutrasDespesas();
+  const titulo = 'Relatório de Despesas';
+  const dataGeracao = 'Gerado em ' + new Date().toLocaleDateString('pt-BR');
+
+  document.getElementById('preview-despesas').innerHTML = `
+    <h4>${titulo}</h4>
+    <div class="subtitulo">${dataGeracao}</div>
+    ${linhasHtml}
+    <div class="relatorio-total"><span>Total de despesas</span><span>${moeda(totalGeral)}</span></div>
+  `;
+  document.getElementById('preview-despesas').style.display = 'block';
+  document.getElementById('acoes-despesas').style.display = 'flex';
+
+  const texto = `*${titulo}*\n\n${linhasTexto}\nTotal de despesas: ${moeda(totalGeral)}`;
+  document.getElementById('btn-copiar-despesas').onclick = () => copiarTexto(texto);
+  document.getElementById('btn-imprimir-despesas').onclick = () => imprimir(`
+    <h3>${titulo}</h3>
+    <div class="subtitulo">${dataGeracao}</div>
+    ${linhasHtml}
+    <div class="relatorio-total"><span>Total de despesas</span><span>${moeda(totalGeral)}</span></div>
+  `);
+});
+
+// --- Relação de participantes ---
+document.getElementById('btn-gerar-participantes').addEventListener('click', () => {
+  if(funcionarios.length === 0){
+    document.getElementById('preview-participantes').innerHTML = '<div class="vazio">Nenhum funcionário cadastrado ainda.</div>';
+    document.getElementById('preview-participantes').style.display = 'block';
+    document.getElementById('acoes-participantes').style.display = 'none';
+    return;
+  }
+
+  let linhasHtml = '', linhasTexto = '';
+  let totalAdultos = 0, totalCriancas = 0;
+
+  funcionarios.forEach((f, idx) => {
+    totalAdultos++;
+    const bebidaTxt = f.bebida === 'cerveja' ? '🍺 cerveja' : '🥤 sem cerveja';
+    const familiares = f.familiares || [];
+    const familiaresTxtHtml = familiares.map(fam => {
+      const nome = typeof fam === 'string' ? fam : fam.nome;
+      const tipo = typeof fam === 'string' ? 'adulto' : fam.tipo;
+      if(tipo === 'crianca') totalCriancas++; else totalAdultos++;
+      return `${escapeHtml(nome)} (${tipo === 'crianca' ? 'criança' : 'adulto'})`;
+    }).join(', ');
+
+    linhasHtml += `<div class="relatorio-linha">
+      <div class="r-nome">${idx + 1}. ${escapeHtml(f.nome)}<span class="r-sub">${bebidaTxt}${familiaresTxtHtml ? ' · leva: ' + familiaresTxtHtml : ''}</span></div>
+    </div>`;
+    linhasTexto += `${idx + 1}. ${f.nome} (${bebidaTxt})${familiaresTxtHtml ? '\n   + ' + familiaresTxtHtml : ''}\n`;
+  });
+
+  const totalGeralPessoas = totalAdultos + totalCriancas;
+  const titulo = 'Relação de Participantes';
+  const dataGeracao = 'Gerado em ' + new Date().toLocaleDateString('pt-BR');
+
+  document.getElementById('preview-participantes').innerHTML = `
+    <h4>${titulo}</h4>
+    <div class="subtitulo">${dataGeracao}</div>
+    ${linhasHtml}
+    <div class="relatorio-total"><span>Total de funcionários</span><span>${funcionarios.length}</span></div>
+    <div class="relatorio-total"><span>Total de adultos</span><span>${totalAdultos}</span></div>
+    <div class="relatorio-total"><span>Total de crianças</span><span>${totalCriancas}</span></div>
+    <div class="relatorio-total"><span>Total geral de pessoas</span><span>${totalGeralPessoas}</span></div>
+  `;
+  document.getElementById('preview-participantes').style.display = 'block';
+  document.getElementById('acoes-participantes').style.display = 'flex';
+
+  const texto = `*${titulo}*\n\n${linhasTexto}\nTotal de funcionários: ${funcionarios.length}\nTotal de adultos: ${totalAdultos}\nTotal de crianças: ${totalCriancas}\nTotal geral de pessoas: ${totalGeralPessoas}`;
+  document.getElementById('btn-copiar-participantes').onclick = () => copiarTexto(texto);
+  document.getElementById('btn-imprimir-participantes').onclick = () => imprimir(`
+    <h3>${titulo}</h3>
+    <div class="subtitulo">${dataGeracao}</div>
+    ${linhasHtml}
+    <div class="relatorio-total"><span>Total de funcionários</span><span>${funcionarios.length}</span></div>
+    <div class="relatorio-total"><span>Total de adultos</span><span>${totalAdultos}</span></div>
+    <div class="relatorio-total"><span>Total de crianças</span><span>${totalCriancas}</span></div>
+    <div class="relatorio-total"><span>Total geral de pessoas</span><span>${totalGeralPessoas}</span></div>
+  `);
+});
+
+// ---------- INICIALIZAÇÃO ----------
+renderPagamentos();
+renderFuncionarios();
+mesRelatorio = { ano: mesAtual.ano, mes: mesAtual.mes };
+renderTituloMesRelatorio();
+</script>
+</body>
+</html>
