@@ -856,7 +856,7 @@
     </div>
   </section>
 
-  <div class="rodape-versao">v15 · Confraternização PPV</div>
+  <div class="rodape-versao">v16 · Confraternização PPV</div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -875,6 +875,7 @@
 <div class="modal-overlay" id="modal-meses-overlay">
   <div class="modal">
     <h3 id="modal-meses-titulo">Meses de João</h3>
+    <div id="modal-meses-resumo" style="font-size:0.82rem; margin:6px 0 10px;"></div>
     <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Toque em um mês para marcar como pago ou pendente.</p>
     <div class="lista-meses-modal" id="lista-meses-modal"></div>
     <button class="modal-fechar" id="btn-fechar-modal-meses">Concluído</button>
@@ -1122,9 +1123,23 @@ function renderListaMesesModal(funcId){
   const f = funcionarios.find(x => x.id === funcId);
   if(!f) return;
   const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
+  const meses = listarMesesModal();
+  const mesesPendentes = [];
+  meses.forEach(m => {
+    const chave = chaveMs(m);
+    const reg = pagamentos[chave] && pagamentos[chave][funcId];
+    if(!reg || !reg.pago) mesesPendentes.push(MESES[m.mes].slice(0,3) + '/' + m.ano);
+  });
+  const resumoEl = document.getElementById('modal-meses-resumo');
+  if(mesesPendentes.length === 0){
+    resumoEl.innerHTML = `<span class="relatorio-status-pago">✅ Em dia — nenhuma pendência em 2026</span>`;
+  } else {
+    resumoEl.innerHTML = `<span class="relatorio-status-pendente">❌ Pendente (${mesesPendentes.length}): ${mesesPendentes.join(', ')} — ${moeda(mesesPendentes.length * valor)}</span>`;
+  }
+
   const cont = document.getElementById('lista-meses-modal');
   cont.innerHTML = '';
-  listarMesesModal().forEach(m => {
+  meses.forEach(m => {
     const chave = chaveMs(m);
     const reg = (pagamentos[chave] && pagamentos[chave][funcId]) || { pago:false, data:null };
     const item = document.createElement('div');
@@ -1194,11 +1209,12 @@ function renderPagamentos(){
     item.innerHTML = `
       <div class="check-pago ${reg.pago ? 'pago' : ''}">${reg.pago ? '✓' : ''}</div>
       <div class="pagamento-info">
-        <div class="nome">${escapeHtml(f.nome)}</div>
+        <div class="nome nome-clicavel" data-id="${f.id}">${escapeHtml(f.nome)}</div>
         <div class="data-pago">${reg.pago && reg.data ? 'Pago em ' + formatarData(reg.data) : (f.bebida === 'cerveja' ? '🍺 bebe cerveja' : '🥤 sem cerveja')}</div>
       </div>
       <div class="pagamento-valor">R$ ${valor}</div>
     `;
+    item.querySelector('.nome-clicavel').addEventListener('click', () => abrirModalMeses(f.id));
     item.querySelector('.check-pago').addEventListener('click', () => {
       if(reg.pago){
         // desmarcar
