@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Confraternização 2026</title>
+<title>Confraternização PPV</title>
 <link rel="manifest" id="manifest-link">
 <meta name="theme-color" content="#2F6B4A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -45,6 +45,7 @@
     padding:28px 20px 22px;
     position:relative;
     overflow:hidden;
+    text-align:center;
   }
   header.top::after{
     content:"";
@@ -59,12 +60,6 @@
     font-weight:600;
     font-size:1.65rem;
     letter-spacing:-0.01em;
-    position:relative;
-  }
-  header.top p{
-    margin-top:4px;
-    font-size:0.85rem;
-    color:var(--ambar-claro);
     position:relative;
   }
   main{
@@ -560,8 +555,7 @@
 <body>
 
 <header class="top">
-  <h1>🍻 Confraternização</h1>
-  <p>Controle de pagamentos · desde jan/2026</p>
+  <h1>🍻 Confraternização PPV</h1>
 </header>
 
 <nav class="tabs">
@@ -776,7 +770,7 @@
     </div>
   </section>
 
-  <div class="rodape-versao">v5 · Confraternização de Final de Ano</div>
+  <div class="rodape-versao">v7 · Confraternização PPV</div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -804,8 +798,8 @@ const iconUrl = URL.createObjectURL(iconBlob);
 document.getElementById('apple-icon').setAttribute('href', iconUrl);
 
 const manifest = {
-  name: "Confraternização 2026",
-  short_name: "Confraternização",
+  name: "Confraternização PPV",
+  short_name: "Confra PPV",
   start_url: ".",
   display: "standalone",
   background_color: "#14181A",
@@ -1004,7 +998,8 @@ function excluirFuncionario(id){
 
 // ---------- ABA PAGAMENTOS ----------
 const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-let mesAtual = { ano: 2026, mes: 0 }; // mes: 0-indexed, começa em Janeiro/2026
+const hojeReal = new Date();
+let mesAtual = { ano: hojeReal.getFullYear(), mes: hojeReal.getMonth() }; // sempre abre no mês atual
 
 function chaveMs(m){ return m.ano + '-' + String(m.mes + 1).padStart(2,'0'); }
 
@@ -1042,7 +1037,7 @@ function renderPagamentos(){
       <div class="check-pago ${reg.pago ? 'pago' : ''}">${reg.pago ? '✓' : ''}</div>
       <div class="pagamento-info">
         <div class="nome">${escapeHtml(f.nome)}</div>
-        <div class="data-pago">${reg.pago && reg.data ? 'Pago em ' + formatarData(reg.data) : (f.bebida === 'cerveja' ? '🍺 leva cerveja' : '🥤 sem cerveja')}</div>
+        <div class="data-pago">${reg.pago && reg.data ? 'Pago em ' + formatarData(reg.data) : (f.bebida === 'cerveja' ? '🍺 bebe cerveja' : '🥤 sem cerveja')}</div>
       </div>
       <div class="pagamento-valor">R$ ${valor}</div>
     `;
