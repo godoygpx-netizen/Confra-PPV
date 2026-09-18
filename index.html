@@ -692,8 +692,18 @@
   <!-- ABA RELATÓRIOS -->
   <section id="tab-relatorios" style="display:none;">
     <div class="card">
+      <h2>Chave Pix para pagamento</h2>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:2px;">Aparece nos relatórios de pagamento copiados para o WhatsApp.</p>
+      <label>Chave Pix</label>
+      <input type="text" id="input-pix-chave" placeholder="CPF, e-mail, telefone ou aleatória">
+      <label>Nome do titular (opcional)</label>
+      <input type="text" id="input-pix-titular" placeholder="Nome de quem recebe">
+      <button class="btn-primario" id="btn-salvar-pix">Salvar chave Pix</button>
+    </div>
+
+    <div class="card">
       <h2>Relatório geral (todos os meses)</h2>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:2px;">Soma tudo desde janeiro/2026 até o mês atual, por funcionário.</p>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:2px;">Soma o ano inteiro (janeiro a dezembro/2026), por funcionário.</p>
       <button class="btn-primario" id="btn-gerar-geral">Gerar relatório geral</button>
       <div class="relatorio-preview" id="preview-geral" style="display:none;"></div>
       <div class="relatorio-acoes" id="acoes-geral" style="display:none;">
@@ -790,7 +800,7 @@
     </div>
   </section>
 
-  <div class="rodape-versao">v9 · Confraternização PPV</div>
+  <div class="rodape-versao">v11 · Confraternização PPV</div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -1029,11 +1039,8 @@ function excluirFuncionario(id){
 // ---------- MODAL: SELECIONAR MESES PAGOS/PENDENTES DE UM FUNCIONÁRIO ----------
 function listarMesesModal(){
   const meses = [];
-  const anoFim = hojeReal.getFullYear() + 1;
-  for(let ano = 2026; ano <= anoFim; ano++){
-    for(let mes = 0; mes <= 11; mes++){
-      meses.push({ ano, mes });
-    }
+  for(let mes = 0; mes <= 11; mes++){
+    meses.push({ ano: 2026, mes });
   }
   return meses;
 }
@@ -1275,7 +1282,7 @@ function numero(valorStr){
 }
 
 function moeda(v){
-  return 'R$ ' + (v || 0).toFixed(2).replace('.', ',');
+  return 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
 }
 
 function obterDetalheBuffet(){
@@ -1367,6 +1374,25 @@ document.getElementById('btn-add-despesa').addEventListener('click', () => {
 });
 
 // ---------- RELATÓRIOS ----------
+const PIX_KEY = 'confraternizacao_pix';
+let pix = JSON.parse(localStorage.getItem(PIX_KEY) || '{}');
+
+function salvarPix(){ localStorage.setItem(PIX_KEY, JSON.stringify(pix)); }
+
+function textoBlocoPix(){
+  if(!pix.chave) return '';
+  return `\n\n🔑 *Chave Pix para pagamento*\n${pix.chave}${pix.titular ? ' — ' + pix.titular : ''}`;
+}
+
+document.getElementById('input-pix-chave').value = pix.chave || '';
+document.getElementById('input-pix-titular').value = pix.titular || '';
+document.getElementById('btn-salvar-pix').addEventListener('click', () => {
+  pix.chave = document.getElementById('input-pix-chave').value.trim();
+  pix.titular = document.getElementById('input-pix-titular').value.trim();
+  salvarPix();
+  mostrarToast('Chave Pix salva!');
+});
+
 let mesRelatorio = { ano: 2026, mes: 0 };
 let textoParaCopiar = '';
 
@@ -1422,7 +1448,7 @@ document.getElementById('btn-gerar-pagamentos').addEventListener('click', () => 
   const chave = chaveMs(mesRelatorio);
   const reg = pagamentos[chave] || {};
   let totalPago = 0, totalPendente = 0;
-  let linhasHtml = '', linhasTexto = '';
+  const pagos = [], pendentes = [];
 
   if(funcionarios.length === 0){
     document.getElementById('preview-pagamentos').innerHTML = '<div class="vazio">Nenhum funcionário cadastrado ainda.</div>';
@@ -1434,18 +1460,31 @@ document.getElementById('btn-gerar-pagamentos').addEventListener('click', () => 
   funcionarios.forEach(f => {
     const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
     const r = reg[f.id];
-    const pago = r && r.pago;
-    if(pago){ totalPago += valor; } else { totalPendente += valor; }
-    const statusTxt = pago ? ('pago em ' + formatarData(r.data)) : 'pendente';
-    linhasHtml += `<div class="relatorio-linha">
-      <div class="r-nome">${escapeHtml(f.nome)}<span class="r-sub">${pago ? '✅ ' : '❌ '}${statusTxt}</span></div>
-      <div class="r-valor ${pago ? 'relatorio-status-pago' : 'relatorio-status-pendente'}">${moeda(valor)}</div>
-    </div>`;
-    linhasTexto += `${pago ? '✅' : '❌'} ${f.nome} — ${moeda(valor)} (${statusTxt})\n`;
+    if(r && r.pago){
+      totalPago += valor;
+      pagos.push({ nome: f.nome, valor, data: r.data });
+    } else {
+      totalPendente += valor;
+      pendentes.push({ nome: f.nome, valor });
+    }
   });
 
   const titulo = `Relatório de Pagamentos — ${MESES[mesRelatorio.mes]} ${mesRelatorio.ano}`;
   const dataGeracao = 'Gerado em ' + new Date().toLocaleDateString('pt-BR');
+
+  let linhasHtml = '';
+  if(pagos.length){
+    linhasHtml += `<div style="margin-top:10px; color:var(--ok); font-weight:600; font-size:0.8rem;">✅ EM DIA</div>`;
+    pagos.forEach((p, i) => {
+      linhasHtml += `<div class="relatorio-linha"><div class="r-nome">${i+1}. ${escapeHtml(p.nome)}<span class="r-sub">pago em ${formatarData(p.data)}</span></div><div class="r-valor relatorio-status-pago">${moeda(p.valor)}</div></div>`;
+    });
+  }
+  if(pendentes.length){
+    linhasHtml += `<div style="margin-top:10px; color:var(--warn); font-weight:600; font-size:0.8rem;">❌ PENDENTES</div>`;
+    pendentes.forEach((p, i) => {
+      linhasHtml += `<div class="relatorio-linha"><div class="r-nome">${i+1}. ${escapeHtml(p.nome)}</div><div class="r-valor relatorio-status-pendente">${moeda(p.valor)}</div></div>`;
+    });
+  }
 
   document.getElementById('preview-pagamentos').innerHTML = `
     <h4>${titulo}</h4>
@@ -1457,7 +1496,18 @@ document.getElementById('btn-gerar-pagamentos').addEventListener('click', () => 
   document.getElementById('preview-pagamentos').style.display = 'block';
   document.getElementById('acoes-pagamentos').style.display = 'flex';
 
-  textoParaCopiar = `*${titulo}*\n\n${linhasTexto}\nTotal arrecadado: ${moeda(totalPago)}\nTotal pendente: ${moeda(totalPendente)}`;
+  let linhasTexto = '';
+  if(pagos.length){
+    linhasTexto += `✅ *Em dia*\n`;
+    pagos.forEach((p, i) => { linhasTexto += `${i+1}. ${p.nome} — ${moeda(p.valor)}\n`; });
+  }
+  if(pendentes.length){
+    if(pagos.length) linhasTexto += '\n';
+    linhasTexto += `❌ *Pendentes*\n`;
+    pendentes.forEach((p, i) => { linhasTexto += `${i+1}. ${p.nome} — ${moeda(p.valor)}\n`; });
+  }
+
+  textoParaCopiar = `*${titulo}*\n\n${linhasTexto}\n💰 *Totais*\nArrecadado: ${moeda(totalPago)}\nPendente: ${moeda(totalPendente)}${textoBlocoPix()}`;
   document.getElementById('btn-copiar-pagamentos').onclick = () => copiarTexto(textoParaCopiar);
   document.getElementById('btn-imprimir-pagamentos').onclick = () => imprimir(`
     <h3>${titulo}</h3>
@@ -1467,6 +1517,7 @@ document.getElementById('btn-gerar-pagamentos').addEventListener('click', () => 
     <div class="relatorio-total"><span>Pendente</span><span>${moeda(totalPendente)}</span></div>
   `);
 });
+
 
 // --- Relatório de despesas ---
 document.getElementById('btn-gerar-despesas').addEventListener('click', () => {
@@ -1570,15 +1621,9 @@ document.getElementById('btn-gerar-participantes').addEventListener('click', () 
 
 // --- Relatório geral (todos os meses, desde jan/2026 até o mês atual) ---
 function listarMesesDoPeriodo(){
-  const hoje = new Date();
-  const anoAtualReal = hoje.getFullYear();
-  const mesAtualReal = hoje.getMonth();
   const meses = [];
-  let ano = 2026, mes = 0;
-  while(ano < anoAtualReal || (ano === anoAtualReal && mes <= mesAtualReal)){
-    meses.push({ ano, mes });
-    mes++;
-    if(mes > 11){ mes = 0; ano++; }
+  for(let mes = 0; mes <= 11; mes++){
+    meses.push({ ano: 2026, mes });
   }
   return meses;
 }
@@ -1593,7 +1638,7 @@ document.getElementById('btn-gerar-geral').addEventListener('click', () => {
 
   const meses = listarMesesDoPeriodo();
   let totalGeralPago = 0, totalGeralPendente = 0;
-  let linhasHtml = '', linhasTexto = '';
+  const emDia = [], comPendencia = [];
 
   funcionarios.forEach(f => {
     const valor = f.bebida === 'cerveja' ? VALOR_CERVEJA : VALOR_SEM;
@@ -1614,19 +1659,26 @@ document.getElementById('btn-gerar-geral').addEventListener('click', () => {
     totalGeralPago += pagoFunc;
     totalGeralPendente += mesesPendentes.length * valor;
 
-    const statusSub = mesesPendentes.length === 0
-      ? `${mesesPagos}/${meses.length} meses pagos — em dia ✅`
-      : `${mesesPagos}/${meses.length} meses pagos — deve: ${mesesPendentes.join(', ')}`;
-
-    linhasHtml += `<div class="relatorio-linha">
-      <div class="r-nome">${escapeHtml(f.nome)}<span class="r-sub">${statusSub}</span></div>
-      <div class="r-valor ${mesesPendentes.length === 0 ? 'relatorio-status-pago' : 'relatorio-status-pendente'}">${moeda(pagoFunc)}</div>
-    </div>`;
-    linhasTexto += `${f.nome} — ${moeda(pagoFunc)} (${statusSub})\n`;
+    const item = { nome: f.nome, valor: pagoFunc, mesesPagos, totalMeses: meses.length, mesesPendentes };
+    if(mesesPendentes.length === 0) emDia.push(item); else comPendencia.push(item);
   });
 
   const titulo = `Relatório Geral de Pagamentos (jan/2026 a ${MESES[meses[meses.length-1].mes].slice(0,3)}/${meses[meses.length-1].ano})`;
   const dataGeracao = 'Gerado em ' + new Date().toLocaleDateString('pt-BR');
+
+  let linhasHtml = '';
+  if(emDia.length){
+    linhasHtml += `<div style="margin-top:10px; color:var(--ok); font-weight:600; font-size:0.8rem;">✅ EM DIA</div>`;
+    emDia.forEach((p, i) => {
+      linhasHtml += `<div class="relatorio-linha"><div class="r-nome">${i+1}. ${escapeHtml(p.nome)}<span class="r-sub">${p.mesesPagos}/${p.totalMeses} meses pagos</span></div><div class="r-valor relatorio-status-pago">${moeda(p.valor)}</div></div>`;
+    });
+  }
+  if(comPendencia.length){
+    linhasHtml += `<div style="margin-top:10px; color:var(--warn); font-weight:600; font-size:0.8rem;">❌ COM PENDÊNCIA</div>`;
+    comPendencia.forEach((p, i) => {
+      linhasHtml += `<div class="relatorio-linha"><div class="r-nome">${i+1}. ${escapeHtml(p.nome)}<span class="r-sub">${p.mesesPagos}/${p.totalMeses} pagos — deve: ${p.mesesPendentes.join(', ')}</span></div><div class="r-valor relatorio-status-pendente">${moeda(p.valor)}</div></div>`;
+    });
+  }
 
   document.getElementById('preview-geral').innerHTML = `
     <h4>${titulo}</h4>
@@ -1638,7 +1690,18 @@ document.getElementById('btn-gerar-geral').addEventListener('click', () => {
   document.getElementById('preview-geral').style.display = 'block';
   document.getElementById('acoes-geral').style.display = 'flex';
 
-  const texto = `*${titulo}*\n\n${linhasTexto}\nTotal arrecadado (geral): ${moeda(totalGeralPago)}\nTotal pendente (geral): ${moeda(totalGeralPendente)}`;
+  let linhasTexto = '';
+  if(emDia.length){
+    linhasTexto += `✅ *Em dia*\n`;
+    emDia.forEach((p, i) => { linhasTexto += `${i+1}. ${p.nome} — ${moeda(p.valor)}\n`; });
+  }
+  if(comPendencia.length){
+    if(emDia.length) linhasTexto += '\n';
+    linhasTexto += `❌ *Com pendência*\n`;
+    comPendencia.forEach((p, i) => { linhasTexto += `${i+1}. ${p.nome} — ${moeda(p.valor)} (deve: ${p.mesesPendentes.join(', ')})\n`; });
+  }
+
+  const texto = `*${titulo}*\n\n${linhasTexto}\n💰 *Totais*\nArrecadado: ${moeda(totalGeralPago)}\nPendente: ${moeda(totalGeralPendente)}${textoBlocoPix()}`;
   document.getElementById('btn-copiar-geral').onclick = () => copiarTexto(texto);
   document.getElementById('btn-imprimir-geral').onclick = () => imprimir(`
     <h3>${titulo}</h3>
