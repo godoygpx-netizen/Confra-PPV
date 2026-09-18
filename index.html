@@ -342,11 +342,13 @@
   .pendencia-linha:last-child{border-bottom:none;}
   .pendencia-linha .nome-p{font-weight:500;}
   .pendencia-linha .valor-p{color:var(--warn); font-family:'IBM Plex Mono', monospace; font-weight:600;}
-  .contagem-buffet{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:0 12px;
+  .buffet-idades-row{
+    display:flex;
+    gap:12px;
+    margin-top:12px;
   }
+  .buffet-idades-row > div{ flex:1; }
+  .buffet-idades-row label{ margin-top:0; }
   .contagem-auto{
     font-weight:400;
     color:var(--steel);
@@ -615,11 +617,14 @@
 
       <label>Familiares que vai levar (opcional)</label>
       <div class="add-familiar-row">
-        <input type="text" id="input-familiar" placeholder="Ex: esposa, filho...">
-        <select id="select-tipo-familiar" style="flex:0 0 110px;">
+        <input type="text" id="input-familiar" placeholder="Ex: esposa, filho..." style="flex:1 1 100%;">
+      </div>
+      <div class="add-familiar-row" style="margin-top:6px;">
+        <select id="select-tipo-familiar" style="flex:1;">
           <option value="adulto">Adulto</option>
           <option value="crianca">Criança</option>
         </select>
+        <input type="text" inputmode="numeric" id="input-familiar-idade" placeholder="Idade" style="flex:0 0 70px; display:none;">
         <button type="button" id="btn-add-familiar">Adicionar</button>
       </div>
       <div class="familiares-lista" id="lista-familiares-form"></div>
@@ -637,17 +642,29 @@
   <section id="tab-despesas" style="display:none;">
     <div class="card">
       <h2>Buffet</h2>
-      <label>Valor por adulto (R$)</label>
-      <input type="text" inputmode="decimal" id="input-buffet-adulto" placeholder="Ex: 45">
-      <label>Valor por criança (R$)</label>
-      <input type="text" inputmode="decimal" id="input-buffet-crianca" placeholder="Ex: 20">
+      <label>Valor Inteira — R$ (adultos)</label>
+      <input type="text" inputmode="decimal" id="input-buffet-inteira" placeholder="Ex: 45">
+      <label>Valor Meia — R$ (calculado automaticamente)</label>
+      <input type="text" inputmode="decimal" id="input-buffet-meia" placeholder="Metade da Inteira">
+      <p style="font-size:0.74rem; color:var(--text-muted); margin-top:-8px;">Free é sempre grátis (R$ 0).</p>
 
-      <div class="contagem-buffet">
-        <label>Nº de adultos <span class="contagem-auto" id="auto-adultos"></span></label>
-        <input type="text" inputmode="numeric" id="input-qtd-adultos">
-        <label>Nº de crianças <span class="contagem-auto" id="auto-criancas"></span></label>
-        <input type="text" inputmode="numeric" id="input-qtd-criancas">
+      <div class="buffet-idades-row">
+        <div>
+          <label>Free até (anos)</label>
+          <input type="text" inputmode="numeric" id="input-idade-free" placeholder="Ex: 4">
+        </div>
+        <div>
+          <label>Meia até (anos)</label>
+          <input type="text" inputmode="numeric" id="input-idade-meia" placeholder="Ex: 9">
+        </div>
       </div>
+
+      <label>Nº Inteira <span class="contagem-auto" id="auto-inteira"></span></label>
+      <input type="text" inputmode="numeric" id="input-qtd-inteira">
+      <label>Nº Meia <span class="contagem-auto" id="auto-meia"></span></label>
+      <input type="text" inputmode="numeric" id="input-qtd-meia">
+      <label>Nº Free <span class="contagem-auto" id="auto-free"></span></label>
+      <input type="text" inputmode="numeric" id="input-qtd-free">
 
       <button class="btn-primario" id="btn-salvar-buffet">Salvar buffet</button>
 
@@ -800,7 +817,7 @@
     </div>
   </section>
 
-  <div class="rodape-versao">v11 · Confraternização PPV</div>
+  <div class="rodape-versao">v13 · Confraternização PPV</div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -911,13 +928,21 @@ document.getElementById('btn-add-familiar').addEventListener('click', adicionarF
 document.getElementById('input-familiar').addEventListener('keypress', e => {
   if(e.key === 'Enter'){ e.preventDefault(); adicionarFamiliarTemp(); }
 });
+document.getElementById('select-tipo-familiar').addEventListener('change', () => {
+  const ehCrianca = document.getElementById('select-tipo-familiar').value === 'crianca';
+  document.getElementById('input-familiar-idade').style.display = ehCrianca ? 'block' : 'none';
+  if(!ehCrianca) document.getElementById('input-familiar-idade').value = '';
+});
 function adicionarFamiliarTemp(){
   const input = document.getElementById('input-familiar');
   const nome = input.value.trim();
   if(!nome) return;
   const tipo = document.getElementById('select-tipo-familiar').value;
-  familiaresTemp.push({ nome, tipo });
+  const idadeInput = document.getElementById('input-familiar-idade');
+  const idade = tipo === 'crianca' && idadeInput.value.trim() !== '' ? Number(idadeInput.value.trim()) : null;
+  familiaresTemp.push({ nome, tipo, idade });
   input.value = '';
+  idadeInput.value = '';
   renderFamiliaresForm();
 }
 function renderFamiliaresForm(){
@@ -927,7 +952,8 @@ function renderFamiliaresForm(){
     const chip = document.createElement('div');
     chip.className = 'familiar-chip';
     const emoji = fam.tipo === 'crianca' ? '🧒' : '🧑';
-    chip.innerHTML = `<span>${emoji} ${escapeHtml(fam.nome)}</span><button data-idx="${idx}">×</button>`;
+    const idadeTxt = fam.tipo === 'crianca' && fam.idade !== null && fam.idade !== undefined ? ` (${fam.idade}a)` : '';
+    chip.innerHTML = `<span>${emoji} ${escapeHtml(fam.nome)}${idadeTxt}</span><button data-idx="${idx}">×</button>`;
     chip.querySelector('button').addEventListener('click', () => {
       familiaresTemp.splice(idx, 1);
       renderFamiliaresForm();
@@ -989,7 +1015,7 @@ function renderFuncionarios(){
     const item = document.createElement('div');
     item.className = 'funcionario-item';
     const familiaresTxt = f.familiares && f.familiares.length
-      ? ' · Leva: ' + f.familiares.map(fam => typeof fam === 'string' ? fam : fam.nome + (fam.tipo === 'crianca' ? ' (criança)' : '')).join(', ')
+      ? ' · Leva: ' + f.familiares.map(fam => typeof fam === 'string' ? fam : fam.nome + (fam.tipo === 'crianca' ? ' (criança' + (fam.idade !== null && fam.idade !== undefined ? ', ' + fam.idade + 'a' : '') + ')' : '')).join(', ')
       : '';
     item.innerHTML = `
       <div class="funcionario-info">
@@ -1258,22 +1284,28 @@ const BUFFET_KEY = 'confraternizacao_buffet';
 
 let despesas = JSON.parse(localStorage.getItem(DESPESAS_KEY) || '[]');
 let buffet = JSON.parse(localStorage.getItem(BUFFET_KEY) || '{}');
-// buffet = { valorAdulto, valorCrianca, qtdAdultosManual, qtdCriancasManual }
+// buffet = { valorInteira, valorMeia, idadeFree, idadeMeia, qtdInteiraManual, qtdMeiaManual, qtdFreeManual }
 
 function salvarDespesas(){ localStorage.setItem(DESPESAS_KEY, JSON.stringify(despesas)); }
 function salvarBuffet(){ localStorage.setItem(BUFFET_KEY, JSON.stringify(buffet)); }
 
-function contarAdultosECriancas(){
-  let adultos = funcionarios.length; // cada funcionário conta como 1 adulto
-  let criancas = 0;
+function contarCategoriasBuffet(){
+  let inteira = funcionarios.length; // cada funcionário sempre paga Inteira
+  let meia = 0, free = 0;
+  const limFree = numero(buffet.idadeFree !== undefined && buffet.idadeFree !== '' ? buffet.idadeFree : 4);
+  const limMeia = numero(buffet.idadeMeia !== undefined && buffet.idadeMeia !== '' ? buffet.idadeMeia : 9);
   funcionarios.forEach(f => {
     (f.familiares || []).forEach(fam => {
       const tipo = typeof fam === 'string' ? 'adulto' : fam.tipo;
-      if(tipo === 'crianca') criancas++;
-      else adultos++;
+      if(tipo !== 'crianca'){ inteira++; return; }
+      const idade = (typeof fam === 'object' && fam.idade !== null && fam.idade !== undefined && fam.idade !== '') ? Number(fam.idade) : null;
+      if(idade === null){ meia++; }
+      else if(idade <= limFree){ free++; }
+      else if(idade <= limMeia){ meia++; }
+      else { inteira++; }
     });
   });
-  return { adultos, criancas };
+  return { inteira, meia, free };
 }
 
 function numero(valorStr){
@@ -1286,15 +1318,18 @@ function moeda(v){
 }
 
 function obterDetalheBuffet(){
-  const auto = contarAdultosECriancas();
-  const qtdAdultos = (buffet.qtdAdultosManual !== undefined && buffet.qtdAdultosManual !== null && buffet.qtdAdultosManual !== '')
-    ? numero(buffet.qtdAdultosManual) : auto.adultos;
-  const qtdCriancas = (buffet.qtdCriancasManual !== undefined && buffet.qtdCriancasManual !== null && buffet.qtdCriancasManual !== '')
-    ? numero(buffet.qtdCriancasManual) : auto.criancas;
-  const valorAdulto = numero(buffet.valorAdulto);
-  const valorCrianca = numero(buffet.valorCrianca);
-  const total = (qtdAdultos * valorAdulto) + (qtdCriancas * valorCrianca);
-  return { qtdAdultos, qtdCriancas, valorAdulto, valorCrianca, total };
+  const auto = contarCategoriasBuffet();
+  const qtdInteira = (buffet.qtdInteiraManual !== undefined && buffet.qtdInteiraManual !== null && buffet.qtdInteiraManual !== '')
+    ? numero(buffet.qtdInteiraManual) : auto.inteira;
+  const qtdMeia = (buffet.qtdMeiaManual !== undefined && buffet.qtdMeiaManual !== null && buffet.qtdMeiaManual !== '')
+    ? numero(buffet.qtdMeiaManual) : auto.meia;
+  const qtdFree = (buffet.qtdFreeManual !== undefined && buffet.qtdFreeManual !== null && buffet.qtdFreeManual !== '')
+    ? numero(buffet.qtdFreeManual) : auto.free;
+  const valorInteira = numero(buffet.valorInteira);
+  const valorMeia = (buffet.valorMeia !== undefined && buffet.valorMeia !== null && buffet.valorMeia !== '')
+    ? numero(buffet.valorMeia) : valorInteira / 2;
+  const total = (qtdInteira * valorInteira) + (qtdMeia * valorMeia);
+  return { qtdInteira, qtdMeia, qtdFree, valorInteira, valorMeia, total };
 }
 
 function calcularTotalBuffet(){
@@ -1306,16 +1341,23 @@ function calcularTotalOutrasDespesas(){
 }
 
 function renderDespesas(){
-  const auto = contarAdultosECriancas();
-  document.getElementById('auto-adultos').textContent = '(cadastrados: ' + auto.adultos + ')';
-  document.getElementById('auto-criancas').textContent = '(cadastradas: ' + auto.criancas + ')';
+  const auto = contarCategoriasBuffet();
+  document.getElementById('auto-inteira').textContent = '(cadastrados: ' + auto.inteira + ')';
+  document.getElementById('auto-meia').textContent = '(cadastradas: ' + auto.meia + ')';
+  document.getElementById('auto-free').textContent = '(cadastradas: ' + auto.free + ')';
 
-  document.getElementById('input-buffet-adulto').value = buffet.valorAdulto || '';
-  document.getElementById('input-buffet-crianca').value = buffet.valorCrianca || '';
-  document.getElementById('input-qtd-adultos').value = buffet.qtdAdultosManual !== undefined ? buffet.qtdAdultosManual : '';
-  document.getElementById('input-qtd-criancas').value = buffet.qtdCriancasManual !== undefined ? buffet.qtdCriancasManual : '';
-  document.getElementById('input-qtd-adultos').placeholder = String(auto.adultos);
-  document.getElementById('input-qtd-criancas').placeholder = String(auto.criancas);
+  document.getElementById('input-buffet-inteira').value = buffet.valorInteira || '';
+  document.getElementById('input-buffet-meia').value = buffet.valorMeia || '';
+  document.getElementById('input-idade-free').value = buffet.idadeFree !== undefined ? buffet.idadeFree : '';
+  document.getElementById('input-idade-meia').value = buffet.idadeMeia !== undefined ? buffet.idadeMeia : '';
+  document.getElementById('input-idade-free').placeholder = '4';
+  document.getElementById('input-idade-meia').placeholder = '9';
+  document.getElementById('input-qtd-inteira').value = buffet.qtdInteiraManual !== undefined ? buffet.qtdInteiraManual : '';
+  document.getElementById('input-qtd-meia').value = buffet.qtdMeiaManual !== undefined ? buffet.qtdMeiaManual : '';
+  document.getElementById('input-qtd-free').value = buffet.qtdFreeManual !== undefined ? buffet.qtdFreeManual : '';
+  document.getElementById('input-qtd-inteira').placeholder = String(auto.inteira);
+  document.getElementById('input-qtd-meia').placeholder = String(auto.meia);
+  document.getElementById('input-qtd-free').placeholder = String(auto.free);
 
   const totalBuffet = calcularTotalBuffet();
   document.getElementById('buffet-total').textContent = 'R$ ' + totalBuffet.toFixed(2).replace('.', ',');
@@ -1350,11 +1392,20 @@ function renderDespesas(){
   }
 }
 
+document.getElementById('input-buffet-inteira').addEventListener('input', () => {
+  const valInteira = numero(document.getElementById('input-buffet-inteira').value);
+  const meia = valInteira / 2;
+  document.getElementById('input-buffet-meia').value = meia ? (Math.round(meia * 100) / 100).toString().replace('.', ',') : '';
+});
+
 document.getElementById('btn-salvar-buffet').addEventListener('click', () => {
-  buffet.valorAdulto = document.getElementById('input-buffet-adulto').value.trim();
-  buffet.valorCrianca = document.getElementById('input-buffet-crianca').value.trim();
-  buffet.qtdAdultosManual = document.getElementById('input-qtd-adultos').value.trim();
-  buffet.qtdCriancasManual = document.getElementById('input-qtd-criancas').value.trim();
+  buffet.valorInteira = document.getElementById('input-buffet-inteira').value.trim();
+  buffet.valorMeia = document.getElementById('input-buffet-meia').value.trim();
+  buffet.idadeFree = document.getElementById('input-idade-free').value.trim();
+  buffet.idadeMeia = document.getElementById('input-idade-meia').value.trim();
+  buffet.qtdInteiraManual = document.getElementById('input-qtd-inteira').value.trim();
+  buffet.qtdMeiaManual = document.getElementById('input-qtd-meia').value.trim();
+  buffet.qtdFreeManual = document.getElementById('input-qtd-free').value.trim();
   salvarBuffet();
   renderDespesas();
   mostrarToast('Buffet atualizado!');
@@ -1525,10 +1576,10 @@ document.getElementById('btn-gerar-despesas').addEventListener('click', () => {
   let linhasHtml = '', linhasTexto = '';
 
   linhasHtml += `<div class="relatorio-linha">
-    <div class="r-nome">Buffet<span class="r-sub">${det.qtdAdultos} adultos × ${moeda(det.valorAdulto)} + ${det.qtdCriancas} crianças × ${moeda(det.valorCrianca)}</span></div>
+    <div class="r-nome">Buffet<span class="r-sub">${det.qtdInteira} inteira × ${moeda(det.valorInteira)} + ${det.qtdMeia} meia × ${moeda(det.valorMeia)} + ${det.qtdFree} free</span></div>
     <div class="r-valor">${moeda(det.total)}</div>
   </div>`;
-  linhasTexto += `Buffet (${det.qtdAdultos} adultos × ${moeda(det.valorAdulto)} + ${det.qtdCriancas} crianças × ${moeda(det.valorCrianca)}): ${moeda(det.total)}\n`;
+  linhasTexto += `Buffet (${det.qtdInteira} inteira × ${moeda(det.valorInteira)} + ${det.qtdMeia} meia × ${moeda(det.valorMeia)} + ${det.qtdFree} free): ${moeda(det.total)}\n`;
 
   despesas.forEach(d => {
     linhasHtml += `<div class="relatorio-linha">
