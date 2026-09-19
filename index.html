@@ -53,7 +53,7 @@
   main{
     max-width:640px;
     margin:0 auto;
-    padding:16px 14px 8px;
+    padding:10px 12px 6px;
   }
 
   nav.tabs{
@@ -91,29 +91,54 @@
   .card{
     background:var(--surface);
     border:1px solid var(--line);
-    padding:14px;
-    margin-bottom:16px;
+    padding:10px 12px;
+    margin-bottom:10px;
   }
   .card h2{
     font-family:'Space Grotesk', sans-serif;
-    font-size:1.02rem;
+    font-size:0.94rem;
     font-weight:600;
     color:var(--text);
-    margin-bottom:14px;
+    margin-bottom:0;
   }
+  .card-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    cursor:pointer;
+    margin-bottom:9px;
+  }
+  .card-header h2{ flex:1; }
+  .card-toggle{
+    flex-shrink:0;
+    width:24px; height:24px;
+    border:1px solid var(--line-strong);
+    background:none;
+    color:var(--text-muted);
+    font-size:0.95rem;
+    font-family:'IBM Plex Mono', monospace;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .card.minimizado .card-header{ margin-bottom:0; }
+  .card.minimizado .card-body{ display:none; }
   label{
     display:block;
-    font-size:0.78rem;
+    font-size:0.76rem;
     color:var(--text-muted);
-    margin-bottom:6px;
-    margin-top:12px;
+    margin-bottom:4px;
+    margin-top:8px;
   }
   label:first-of-type{margin-top:0;}
   input[type=text], select, input[type=date]{
     width:100%;
-    padding:10px;
+    padding:8px;
     border:1px solid var(--line-strong);
-    font-size:0.92rem;
+    font-size:0.9rem;
     font-family:'IBM Plex Sans', sans-serif;
     background:var(--bg);
     color:var(--text);
@@ -188,14 +213,14 @@
   }
   .btn-primario{
     width:100%;
-    padding:11px;
+    padding:9px;
     border:none;
     background:var(--amber);
     color:var(--bg);
     font-family:'Space Grotesk', sans-serif;
     font-weight:600;
-    font-size:0.92rem;
-    margin-top:16px;
+    font-size:0.9rem;
+    margin-top:10px;
     cursor:pointer;
   }
   .btn-primario:active{opacity:0.8;}
@@ -203,7 +228,7 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:11px 0;
+    padding:8px 0;
     border-bottom:1px solid var(--line);
   }
   .funcionario-item:last-child{border-bottom:none;}
@@ -222,6 +247,15 @@
     gap:5px;
   }
   .nome-clicavel:active{opacity:0.7;}
+  .nome-pago{ color:var(--ok) !important; }
+  .nome-pendente{
+    color:var(--warn) !important;
+    animation:pulsarPendente 1.4s ease-in-out infinite;
+  }
+  @keyframes pulsarPendente{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:0.4; }
+  }
   .icone-calendario{ font-size:0.8rem; opacity:0.75; }
   .funcionario-info .meta{
     font-size:0.74rem;
@@ -282,7 +316,7 @@
     display:flex;
     align-items:center;
     gap:12px;
-    padding:11px 0;
+    padding:8px 0;
     border-bottom:1px solid var(--line);
   }
   .pagamento-item:last-child{border-bottom:none;}
@@ -324,7 +358,7 @@
   .resumo-box{
     background:var(--surface);
     border:1px solid var(--line);
-    padding:12px;
+    padding:9px;
   }
   .resumo-box .rotulo{
     font-size:0.7rem;
@@ -346,7 +380,7 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:9px 0;
+    padding:6px 0;
     border-bottom:1px solid var(--line);
     font-size:0.86rem;
   }
@@ -371,7 +405,7 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:10px 0;
+    padding:7px 0;
     border-bottom:1px solid var(--line);
   }
   .despesa-item:last-child{border-bottom:none;}
@@ -397,10 +431,10 @@
   .relatorio-preview{
     background:var(--surface);
     border:1px solid var(--line);
-    padding:14px;
-    margin-top:14px;
-    font-size:0.86rem;
-    line-height:1.55;
+    padding:10px;
+    margin-top:10px;
+    font-size:0.84rem;
+    line-height:1.45;
   }
   .relatorio-preview h4{
     font-family:'Space Grotesk', sans-serif;
@@ -592,17 +626,17 @@
 </header>
 
 <nav class="tabs">
-  <button class="tab-btn active" data-tab="pagamentos"><span class="tab-icon">💰</span><span class="tab-label">Pagamentos</span></button>
+  <button class="tab-btn" data-tab="pagamentos"><span class="tab-icon">💰</span><span class="tab-label">Pagamentos</span></button>
   <button class="tab-btn" data-tab="funcionarios"><span class="tab-icon">👥</span><span class="tab-label">Funcionários</span></button>
   <button class="tab-btn" data-tab="despesas"><span class="tab-icon">🧾</span><span class="tab-label">Despesas</span></button>
-  <button class="tab-btn" data-tab="resumo"><span class="tab-icon">📊</span><span class="tab-label">Resumo</span></button>
+  <button class="tab-btn active" data-tab="resumo"><span class="tab-icon">📊</span><span class="tab-label">Resumo</span></button>
   <button class="tab-btn" data-tab="relatorios"><span class="tab-icon">📄</span><span class="tab-label">Relatórios</span></button>
 </nav>
 
 <main>
 
   <!-- ABA PAGAMENTOS -->
-  <section id="tab-pagamentos">
+  <section id="tab-pagamentos" style="display:none;">
     <div class="card">
       <div class="mes-seletor">
         <button id="mes-anterior">‹</button>
@@ -805,7 +839,7 @@
   </section>
 
   <!-- ABA RESUMO -->
-  <section id="tab-resumo" style="display:none;">
+  <section id="tab-resumo">
     <div class="card">
       <h2>Saldo geral</h2>
       <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Soma de tudo que já foi pago, menos o total de despesas.</p>
@@ -856,7 +890,7 @@
     </div>
   </section>
 
-  <div class="rodape-versao">v16 · Confraternização PPV</div>
+  <div class="rodape-versao">v18 · Confraternização PPV</div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -1209,7 +1243,7 @@ function renderPagamentos(){
     item.innerHTML = `
       <div class="check-pago ${reg.pago ? 'pago' : ''}">${reg.pago ? '✓' : ''}</div>
       <div class="pagamento-info">
-        <div class="nome nome-clicavel" data-id="${f.id}">${escapeHtml(f.nome)}</div>
+        <div class="nome nome-clicavel ${reg.pago ? 'nome-pago' : 'nome-pendente'}" data-id="${f.id}">${escapeHtml(f.nome)}</div>
         <div class="data-pago">${reg.pago && reg.data ? 'Pago em ' + formatarData(reg.data) : (f.bebida === 'cerveja' ? '🍺 bebe cerveja' : '🥤 sem cerveja')}</div>
       </div>
       <div class="pagamento-valor">R$ ${valor}</div>
@@ -1286,7 +1320,7 @@ function renderResumo(){
     pendentes.forEach(p => {
       const linha = document.createElement('div');
       linha.className = 'pendencia-linha';
-      linha.innerHTML = `<span class="nome-p">${escapeHtml(p.nome)}</span><span class="valor-p">R$ ${p.valor}</span>`;
+      linha.innerHTML = `<span class="nome-p nome-pendente">${escapeHtml(p.nome)}</span><span class="valor-p">R$ ${p.valor}</span>`;
       contPend.appendChild(linha);
     });
   }
@@ -1887,11 +1921,51 @@ document.getElementById('btn-gerar-geral').addEventListener('click', () => {
   `);
 });
 
+// ---------- CARDS MINIMIZÁVEIS ----------
+function tornarCardsMinimizaveis(){
+  Array.from(document.querySelectorAll('.card')).forEach(card => {
+    const titulo = card.querySelector(':scope > h2');
+    if(!titulo) return; // cards sem título (ex: Pagamentos) não recebem o recurso
+
+    const chave = 'card-min-' + titulo.textContent.trim().toLowerCase().replace(/\s+/g, '-');
+
+    const header = document.createElement('div');
+    header.className = 'card-header';
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'card-toggle';
+    toggle.textContent = '−';
+    header.appendChild(titulo);
+    header.appendChild(toggle);
+    card.insertBefore(header, card.firstChild);
+
+    const body = document.createElement('div');
+    body.className = 'card-body';
+    Array.from(card.children).forEach(filho => {
+      if(filho !== header) body.appendChild(filho);
+    });
+    card.appendChild(body);
+
+    if(localStorage.getItem(chave) === '1'){
+      card.classList.add('minimizado');
+      toggle.textContent = '+';
+    }
+
+    header.addEventListener('click', () => {
+      const minimizado = card.classList.toggle('minimizado');
+      toggle.textContent = minimizado ? '+' : '−';
+      localStorage.setItem(chave, minimizado ? '1' : '0');
+    });
+  });
+}
+
 // ---------- INICIALIZAÇÃO ----------
 renderPagamentos();
 renderFuncionarios();
+renderResumo();
 mesRelatorio = { ano: mesAtual.ano, mes: mesAtual.mes };
 renderTituloMesRelatorio();
+tornarCardsMinimizaveis();
 </script>
 </body>
 </html>
